@@ -22,6 +22,6 @@ from . import views
 urlpatterns = [
     url(r'', include('django.contrib.auth.urls')),
     url(r'^profile/$', views.profile_view, name='profile'),
-    url(r'^sing_up/$', views.sing_up_view, name='sing_up'),
+    url(r'^sign_up/$', views.SignUpFormView.as_view(), name='sign_up'),
 ]
 
