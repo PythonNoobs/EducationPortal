@@ -10,46 +10,71 @@
 </head>
 
 <body>
-  {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
 
-  {% if next %}
-  {% if user.is_authenticated %}
-  <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-  {% else %}
-  <p>Please login to see this page.</p>
-  {% endif %}
-  {% endif %}
   <div class="container-fluid">
+
+
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+    {% endif %}
     <div class="row">
       <div class="col-sm"></div>
       <div class="col-sm">
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            <p>Your username and password didn't match. Please try again.</p>
+          </div>
+  
+          {% endif %}
         <form method="post" action="{% url 'login' %}">
           {% csrf_token %}
 
+          <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+          </div>
+          <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+          </div>
 
           <div>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-          </div>
-          <div>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-          </div>
-
-          <div>
-            <input class="btn btn-primary btn-block" type="submit" value="Login" />
+            <input class="btn btn-primary" type="submit" value="Login" />
             <input type="hidden" name="next" value="{{ next }}" />
           </div>
         </form>
         {# Assumes you setup the password_reset view in your URLconf #}
         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        
       </div>
       <div class="col-sm"></div>
     </div>
   </div>
 
+
+
+  <script type="text/javascript">
+    function addClass(element, class_name) {
+      if (!element.classList.contains(class_name)) {
+        element.classList.add(class_name);
+      }
+    }
+
+    input_username = document.getElementById('id_username');
+    input_password = document.getElementById('id_password');
+
+    addClass(input_username, "form-control");
+    addClass(input_password, "form-control");
+
+    
+    document.getElementById("sing_up_button").hidden = false;
+    document.getElementById("login_button").hidden = false;
+    document.getElementById("logout_button").hidden = true;
+  </script>
 </body>
 {% endblock %}
