@@ -1,4 +1,5 @@
 from django.db import models
+from json import loads
 
 QUESTION_TYPES = [('Single Answer', 'Single Answer'),
                   ('Multi Answer', 'Multi Answer'),
@@ -39,25 +40,40 @@ class QuizQuestion(models.Model):
     Linked to Quiz model
     """
     question_text = models.TextField(null=False)
-    question_code = models.TextField(null=True)
+    question_code = models.TextField(null=True, default='', blank=True)
     question_type = models.CharField(max_length=20, null=True, choices=QUESTION_TYPES, default='Single Answer')
     question_points = models.IntegerField(null=False, default=1)
     linked_quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, null=False)
 
+    class Meta:
+        verbose_name_plural = 'Quiz questions'
+        ordering = ['linked_quiz']
+
     def __str__(self):
-        return f'{self.question_text[:30]}...'
+        if len(self.question_text)>30:
+            return f'{str(self.question_text)[:30]}... ({self.linked_quiz})'
+        else:
+            return f'{str(self.question_text)[:30]} ({self.linked_quiz})'
 
 class QuizAnswers(models.Model):
     """
     Class for define answers for question(s)
     Linked to Quiz Question model
     """
-    summary = models.TextField(null=False)
-    correct_flag = models.BooleanField()
+    answers_dict = models.TextField(null=False)
     linked_question = models.ForeignKey(QuizQuestion, on_delete=models.PROTECT, null=False)
 
+    class Meta:
+        verbose_name_plural = 'Quiz answers'
+        ordering = ['linked_question']
+
+    def get_number_of_answers(self):
+        return len(loads(self.answers_dict))
+
     def __str__(self):
-        return f'{self.linked_question} ({self.correct_flag})'
+        return f'{self.linked_question} ({self.get_number_of_answers()})'
+
+    # TODO: Need to overwrite save method with additional check for dictionary format. 
 
 class ActiveQuiz(models.Model):
     """
