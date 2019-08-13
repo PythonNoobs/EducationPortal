@@ -10,6 +10,13 @@
     <body>
         <h1> Welcome to the questions page </h1>
 
+        {% for question in questions_list %}
+        
+        <p><a href="#"> {{question.question_text}} </a></p>
+        <p>{{question.answers_dict}} </p>
+        
+        {% endfor %}
+
     </body>
     {% endblock %}
 </html>

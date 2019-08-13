@@ -44,6 +44,7 @@ class QuizQuestion(models.Model):
     question_type = models.CharField(max_length=20, null=True, choices=QUESTION_TYPES, default='Single Answer')
     question_points = models.IntegerField(null=False, default=1)
     linked_quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, null=False)
+    answers_dict = models.TextField(null=False, default='')
 
     class Meta:
         verbose_name_plural = 'Quiz questions'
@@ -54,24 +55,6 @@ class QuizQuestion(models.Model):
             return f'{str(self.question_text)[:30]}... ({self.linked_quiz})'
         else:
             return f'{str(self.question_text)[:30]} ({self.linked_quiz})'
-
-class QuizAnswers(models.Model):
-    """
-    Class for define answers for question(s)
-    Linked to Quiz Question model
-    """
-    answers_dict = models.TextField(null=False)
-    linked_question = models.ForeignKey(QuizQuestion, on_delete=models.PROTECT, null=False)
-
-    class Meta:
-        verbose_name_plural = 'Quiz answers'
-        ordering = ['linked_question']
-
-    def get_number_of_answers(self):
-        return len(loads(self.answers_dict))
-
-    def __str__(self):
-        return f'{self.linked_question} ({self.get_number_of_answers()})'
 
     # TODO: Need to overwrite save method with additional check for dictionary format. 
 
