@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from .models import Quiz, QuizQuestion
 
-# Create your views here.
 def quiz_view(request):
 
     quiz_list = [item for item in Quiz.objects.all()]

@@ -63,10 +63,34 @@ class ActiveQuiz(models.Model):
     Class for define status of quiz
     Linked to Quiz Question model
     """
-    name = models.CharField(max_length=50, null=False)
-    category_name = models.CharField(max_length=50, null=False)
+    active_quiz_key = models.CharField(max_length=50, null=False)
+    name = models.CharField(max_length=50, null=False, default=None)
+    category = models.CharField(max_length=50, null=False, default=None)
     question = models.ForeignKey(QuizQuestion, on_delete=models.SET_DEFAULT, default=None) 
     question_done_flag = models.BooleanField(null=True)
     correct_answer_flag = models.BooleanField(null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField()
+
+    
+
+def store_active_quiz_data(question_id_shuffled_list):
+    from uuid import uuid1
+    from datetime import datetime
+    _id = uuid1()
+    _start_time = datetime.now()
+
+    for question_id in question_id_shuffled_list:
+        temp_active_quiz = ActiveQuiz()    
+        temp_active_quiz.active_quiz_key = _id
+        temp_active_quiz.name = ''
+        temp_active_quiz.category_name = ''
+        temp_active_quiz.question = question_id
+        temp_active_quiz.question_done_flag = False
+        temp_active_quiz.started_at = _start_time
+        temp_active_quiz.finished_at = ''
+        temp_active_quiz.save()
+
+
+
+
