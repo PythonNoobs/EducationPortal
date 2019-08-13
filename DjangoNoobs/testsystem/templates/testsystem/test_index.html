@@ -8,7 +8,14 @@
         <title>Test System page</title>
     </head>
     <body>
-    <h1> Welcome to the test system page </h1>
+        <h1> Welcome to the test system page </h1>
+
+        {% for quiz in quiz_data %}
+        
+        <p><a href="{% url 'questions' quiz.id %}"> {{quiz.name}} </a></p>
+        
+        {% endfor %}
+
     </body>
     {% endblock %}
 </html>
