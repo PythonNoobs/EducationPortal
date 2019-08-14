@@ -10,10 +10,12 @@
     <body>
         <h1> Welcome to the questions page </h1>
 
-        {% for question in questions_list %}
+        <h3>Quiz Name: {{quiz_name}} </h3>
+
+        {% for question in active_quiz_questions %}
         
-        <p><a href="#"> {{question.question_text}} </a></p>
-        <p>{{question.answers_dict}} </p>
+        <p><a href="#"> {{question.question.question_text}} </a></p>
+        <p>{{question.question.answers_dict}} </p>
         
         {% endfor %}
 

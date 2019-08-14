@@ -70,26 +70,30 @@ class ActiveQuiz(models.Model):
     question_done_flag = models.BooleanField(null=True)
     correct_answer_flag = models.BooleanField(null=True)
     started_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField()
+    finished_at = models.DateTimeField(null=True, blank=True)
+    result = models.IntegerField(default=0)
 
     
+    @staticmethod
+    def store_active_quiz_data(question_id_shuffled_list, quiz_name, category_name):
+        from uuid import uuid1
+        from datetime import datetime
+        import django.utils.timezone 
+        _id = uuid1()
+        _start_time = datetime.now()
 
-def store_active_quiz_data(question_id_shuffled_list):
-    from uuid import uuid1
-    from datetime import datetime
-    _id = uuid1()
-    _start_time = datetime.now()
-
-    for question_id in question_id_shuffled_list:
-        temp_active_quiz = ActiveQuiz()    
-        temp_active_quiz.active_quiz_key = _id
-        temp_active_quiz.name = ''
-        temp_active_quiz.category_name = ''
-        temp_active_quiz.question = question_id
-        temp_active_quiz.question_done_flag = False
-        temp_active_quiz.started_at = _start_time
-        temp_active_quiz.finished_at = ''
-        temp_active_quiz.save()
+        for question_id in question_id_shuffled_list:
+            temp_active_quiz = ActiveQuiz()    
+            temp_active_quiz.active_quiz_key = _id
+            temp_active_quiz.name = quiz_name
+            temp_active_quiz.category = category_name
+            temp_active_quiz.question = QuizQuestion.objects.get(pk=question_id)
+            temp_active_quiz.question_done_flag = False
+            temp_active_quiz.started_at = django.utils.timezone.now()
+            temp_active_quiz.finished_at = None
+            temp_active_quiz.save()
+        
+        return _id
 
 
 
