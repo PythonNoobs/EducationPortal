@@ -12,7 +12,7 @@
 
         {% for quiz in quiz_list %}
         
-        <p><a href="{% url 'questions' quiz.id quiz.name quiz.category_name.category_name %}"> {{quiz.name}} </a></p>
+        <p><a href="{% url 'quiz_details' quiz.id %}"> {{quiz.name}} </a></p>
         
         {% endfor %}
 
