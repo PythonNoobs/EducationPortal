@@ -58,7 +58,7 @@ class QuizQuestion(models.Model):
         ordering = ['linked_quiz']
 
     def __str__(self):
-        if len(self.question_text)>30:
+        if len(self.question_text) > 30:
             return f'{str(self.question_text)[:30]}... ({self.linked_quiz})'
         return f'{str(self.question_text)[:30]} ({self.linked_quiz})'
 

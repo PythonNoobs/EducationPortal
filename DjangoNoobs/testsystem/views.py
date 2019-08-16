@@ -48,6 +48,16 @@ def active_quiz(request, active_quiz_key):
     """
     This view function return active quiz page and starts quiz engine
     """
-    page_content = {'active_quiz_key': active_quiz_key}
+    active_question_list = [q for q in ActiveQuiz.objects.filter(
+        active_quiz_key=active_quiz_key) if q.question_done_flag == False]
 
-    return render(request, 'testsystem/active_quiz.html', context=page_content)
+    if request.method == 'GET':
+        active_question = active_question_list.pop()
+
+        page_content = {'active_quiz_key': active_quiz_key,
+                        'active_question': active_question}
+        return render(request, 'testsystem/active_quiz.html', context=page_content)
+
+    if request.method == 'POST':
+        page_content = {'active_quiz_key': active_quiz_key}
+        return render(request, 'testsystem/active_quiz.html', context=page_content)
