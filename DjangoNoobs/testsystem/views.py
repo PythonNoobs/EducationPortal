@@ -1,9 +1,14 @@
-from django.shortcuts import render, get_object_or_404, HttpResponse
+"""
+Views functions for Quiz application
+"""
+from django.shortcuts import render
 from .models import Quiz, QuizQuestion, ActiveQuiz
 
 
 def quiz_view(request):
-
+    """
+    This view function return start page for Quiz application
+    """
     quiz_list = [item for item in Quiz.objects.all()]
     page_content = {'quiz_list': quiz_list}
 
@@ -13,7 +18,10 @@ def quiz_view(request):
 
 
 def quiz_details(request, quiz_id):
-
+    """
+    This view function return page with Quiz descriptions
+    and creates ActiveQuiz table in database
+    """
     if request.method == 'GET':
         questions_id_list = [
             item.id for item in QuizQuestion.objects.filter(linked_quiz=quiz_id)]
@@ -37,6 +45,9 @@ def quiz_details(request, quiz_id):
 
 
 def active_quiz(request, active_quiz_key):
-    page_content = {'active_quiz_key':active_quiz_key}
+    """
+    This view function return active quiz page and starts quiz engine
+    """
+    page_content = {'active_quiz_key': active_quiz_key}
 
     return render(request, 'testsystem/active_quiz.html', context=page_content)
