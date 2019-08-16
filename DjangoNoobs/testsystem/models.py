@@ -94,7 +94,3 @@ class ActiveQuiz(models.Model):
             temp_active_quiz.save()
         
         return _id
-
-
-
-
