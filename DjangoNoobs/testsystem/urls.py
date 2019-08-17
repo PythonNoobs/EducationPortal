@@ -1,9 +1,12 @@
+"""
+urls for test system application
+"""
 from django.urls import path
-from . import views 
+from . import views
 
 
 urlpatterns = [
-    path('', views.quiz_view, name='test'),
-    path('<int:quiz_id>', views.quiz_details, name='quiz_details'),
-    path('<str:active_quiz_key>', views.active_quiz, name='active_quiz')
+    path('', views.QuizView.as_view(), name='test'),
+    path('<int:quiz_id>', views.QuizDetailsView.as_view(), name='quiz_details'),
+    path('<str:active_quiz_key>', views.ActiveQuizView.as_view(), name='active_quiz')
 ]

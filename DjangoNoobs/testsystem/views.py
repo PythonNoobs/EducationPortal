@@ -2,62 +2,74 @@
 Views functions for Quiz application
 """
 from django.shortcuts import render
+from django.views.generic import View, ListView
 from .models import Quiz, QuizQuestion, ActiveQuiz
 
 
-def quiz_view(request):
+class QuizView(ListView):
     """
-    This view function return start page for Quiz application
+    This class-view used for return start page for Quiz application
+    with list of quiz-tests
     """
-    quiz_list = [item for item in Quiz.objects.all()]
-    page_content = {'quiz_list': quiz_list}
-
-    return render(request, 'testsystem/test_index.html', context=page_content)
-
-# TODO: Need add check for existing IDs
+    model = Quiz
 
 
-def quiz_details(request, quiz_id):
+class QuizDetailsView(View):
     """
-    This view function return page with Quiz descriptions
+    This class-view used for manage with Quiz description
     and creates ActiveQuiz table in database
     """
-    if request.method == 'GET':
+    template_name = 'index.html'
+    page_content = {}
+
+    def get(self, request, quiz_id):
+        """GET"""
         questions_id_list = [
             item.id for item in QuizQuestion.objects.filter(linked_quiz=quiz_id)]
 
         quiz = Quiz.objects.get(pk=quiz_id)
 
-        quiz_name = quiz.name
-        quiz_category_name = quiz.category_name
-        quiz_description = quiz.description
+        self.page_content['quiz_name'] = quiz.name
+        self.page_content['quiz_category_name'] = quiz.category_name
+        self.page_content['quiz_description'] = quiz.description
 
-        active_quiz_key = ActiveQuiz.store_active_quiz_data(questions_id_list,
-                                                            quiz_name,
-                                                            quiz_description)
+        self.page_content['active_quiz_key'] = ActiveQuiz.store_active_quiz_data(
+            questions_id_list,
+            self.page_content['quiz_name'],
+            self.page_content['quiz_description'])
 
-        page_content = {'quiz_name': quiz_name,
-                        'quiz_category_name': quiz_category_name,
-                        'quiz_description': quiz_description,
-                        'active_quiz_key': active_quiz_key}
+        return render(request, 'testsystem/details.html', context=self.page_content)
 
-    return render(request, 'testsystem/details.html', context=page_content)
+# TODO: Need add check for existing IDs
 
 
-def active_quiz(request, active_quiz_key):
+class ActiveQuizView(View):
     """
-    This view function return active quiz page and starts quiz engine
+    This class-view used for manage with active quiz
     """
-    active_question_list = [q for q in ActiveQuiz.objects.filter(
-        active_quiz_key=active_quiz_key) if q.question_done_flag == False]
+    template_name = 'testsystem/active_quiz.html'
+    page_content = {}
 
-    if request.method == 'GET':
+    def get(self, request, active_quiz_key):
+        """GET"""
+        # TODO: need to create sepatrate function for get actual question
+        active_question_list = [q for q in ActiveQuiz.objects.filter(
+            active_quiz_key=active_quiz_key) if not q.question_done_flag]
+
         active_question = active_question_list.pop()
+        self.page_content['active_quiz_key'] = active_quiz_key
+        self.page_content['active_question'] = active_question
 
-        page_content = {'active_quiz_key': active_quiz_key,
-                        'active_question': active_question}
-        return render(request, 'testsystem/active_quiz.html', context=page_content)
+        return render(request, self.template_name, context=self.page_content)
 
-    if request.method == 'POST':
-        page_content = {'active_quiz_key': active_quiz_key}
-        return render(request, 'testsystem/active_quiz.html', context=page_content)
+    def post(self, request, active_quiz_key):
+        """POST"""
+        # TODO: need to create sepatrate function for get actual question
+        active_question_list = [q for q in ActiveQuiz.objects.filter(
+            active_quiz_key=active_quiz_key) if not q.question_done_flag]
+
+        active_question = active_question_list.pop()
+        self.page_content['active_quiz_key'] = active_quiz_key
+        self.page_content['active_question'] = active_question
+
+        return render(request, self.template_name, context=self.page_content)
