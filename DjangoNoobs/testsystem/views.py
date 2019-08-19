@@ -1,7 +1,7 @@
 """
 Views functions for Quiz application
 """
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import View, ListView
 from .models import Quiz, QuizQuestion, ActiveQuiz
 
@@ -24,10 +24,11 @@ class QuizDetailsView(View):
 
     def get(self, request, quiz_id):
         """GET"""
+
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+
         questions_id_list = [
             item.id for item in QuizQuestion.objects.filter(linked_quiz=quiz_id)]
-
-        quiz = Quiz.objects.get(pk=quiz_id)
 
         self.page_content['quiz_name'] = quiz.name
         self.page_content['quiz_category_name'] = quiz.category_name
@@ -40,9 +41,6 @@ class QuizDetailsView(View):
 
         return render(request, 'testsystem/details.html', context=self.page_content)
 
-# TODO: Need add check for existing IDs
-
-
 class ActiveQuizView(View):
     """
     This class-view used for manage with active quiz
@@ -50,12 +48,13 @@ class ActiveQuizView(View):
     template_name = 'testsystem/active_quiz.html'
     page_content = {}
 
+    @staticmethod
+    def _get_active_questions(_active_quiz_key):
+        return [q for q in ActiveQuiz.objects.filter(active_quiz_key=_active_quiz_key) if not q.question_done_flag]
+
     def get(self, request, active_quiz_key):
         """GET"""
-        # TODO: need to create sepatrate function for get actual question
-        active_question_list = [q for q in ActiveQuiz.objects.filter(
-            active_quiz_key=active_quiz_key) if not q.question_done_flag]
-
+        active_question_list = ActiveQuizView._get_active_questions(active_quiz_key)
         active_question = active_question_list.pop()
         self.page_content['active_quiz_key'] = active_quiz_key
         self.page_content['active_question'] = active_question
@@ -64,10 +63,7 @@ class ActiveQuizView(View):
 
     def post(self, request, active_quiz_key):
         """POST"""
-        # TODO: need to create sepatrate function for get actual question
-        active_question_list = [q for q in ActiveQuiz.objects.filter(
-            active_quiz_key=active_quiz_key) if not q.question_done_flag]
-
+        active_question_list = ActiveQuizView._get_active_questions(active_quiz_key)
         active_question = active_question_list.pop()
         self.page_content['active_quiz_key'] = active_quiz_key
         self.page_content['active_question'] = active_question
