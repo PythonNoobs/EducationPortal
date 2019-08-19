@@ -2,7 +2,7 @@
 <html lang="ru">
     <head>
         <meta charset="utf-8">
-        <title>Base template</title>
+        <!--Не ставьте здесь заголовок, он на все страницы распространяется-->
 
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet"
@@ -32,6 +32,9 @@
                             aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
+                <a id="sign_up_button" href="{% url 'sign_up'%}" hidden><button type="button" class="btn btn-success"">Sing up</button></a>
+                <a id="login_button" href="{% url 'login'%}" hidden><button type="button" class="btn btn-dark"">Login</button></a>
+                <a id="logout_button" href="{% url 'logout'%}" hidden><button type="button" class="btn btn-dark"">Logout</button></a>
             </div>
         </nav>
 
@@ -58,7 +61,7 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
 
-
+            
 
     </body>
 </html>

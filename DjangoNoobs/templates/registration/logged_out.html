@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+{% extends "base.html" %}
+
+{% block content %}
+
+<head>
+  <meta charset="utf-8">
+  <title>Logout</title>
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm"></div>
+      <div class="col-sm">
+          
+          <div class="alert alert-info">Logged out!</div>
+          <a  href="{% url 'login'%}"><button type="button" class="btn btn-primary"">Click here to login again.</button></a>
+        </div>
+      <div class="col-sm"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    document.getElementById("sign_up_button").hidden = false;
+    document.getElementById("login_button").hidden = false;
+    document.getElementById("logout_button").hidden = true;
+  </script>
+</body>
+{% endblock %}

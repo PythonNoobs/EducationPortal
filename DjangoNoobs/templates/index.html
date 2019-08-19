@@ -9,7 +9,19 @@
     </head>
     <body>
 
-
+        <script type="text/javascript">
+            if ('{{user.is_authenticated}}' === 'True'){
+                document.getElementById("sign_up_button").hidden = true;
+                document.getElementById("login_button").hidden = true;
+                document.getElementById("logout_button").hidden = false;
+            }
+            else{
+                document.getElementById("sign_up_button").hidden = false;
+                document.getElementById("login_button").hidden = false;
+                document.getElementById("logout_button").hidden = true;
+            }
+            
+        </script>
 
     </body>
     {% endblock %}
