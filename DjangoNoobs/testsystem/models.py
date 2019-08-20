@@ -1,6 +1,7 @@
 """
 Classes (Models) for Quiz application
 """
+from json import loads
 from django.db import models
 
 QUESTION_TYPES = [('Single Answer', 'Single Answer'),
@@ -62,7 +63,12 @@ class QuizQuestion(models.Model):
             return f'{str(self.question_text)[:30]}... ({self.linked_quiz})'
         return f'{str(self.question_text)[:30]} ({self.linked_quiz})'
 
-# TODO: Need to overwrite save method with additional check for dictionary format.
+    def get_answers(self):
+        """
+        convert answer text to dictionary and return it
+        """
+        json_acceptable_string = self.answers_dict.replace("'", "\"")
+        return loads(json_acceptable_string)
 
 
 class ActiveQuiz(models.Model):
