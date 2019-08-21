@@ -10,9 +10,7 @@ QUESTION_TYPES = [('Single Answer', 'Single Answer'),
 
 
 class QuizCategories(models.Model):
-    """
-    Class for define quiz category
-    """
+    """ Class for define quiz category """
     category_name = models.CharField(max_length=50, unique=True)
 
     class Meta:
@@ -86,6 +84,11 @@ class ActiveQuiz(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
     result = models.IntegerField(default=0)
+    skip_flag = models.BooleanField(null=False, default=True)
+
+    def __str__(self):
+        info = f'pk: {self.pk}, key: {self.active_quiz_key}, skip_flag: {self.skip_flag}, question_done_flag: {self.question_done_flag}'
+        return info
 
     @staticmethod
     def store_active_quiz_data(question_id_shuffled_list, quiz_name, category_name):
@@ -109,6 +112,7 @@ class ActiveQuiz(models.Model):
             temp_active_quiz.question_done_flag = False
             temp_active_quiz.started_at = django.utils.timezone.now()
             temp_active_quiz.finished_at = None
+            temp_active_quiz.skip_flag = False
             temp_active_quiz.save()
 
         return _id
