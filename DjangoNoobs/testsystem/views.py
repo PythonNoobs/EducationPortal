@@ -136,6 +136,9 @@ class ActiveQuizView(View):
         active_question = active_question_list.pop()
         self.page_content['active_quiz_key'] = active_quiz_key
         self.page_content['active_question'] = active_question
+        self.page_content['answers'] = active_question.question.get_answers(
+        ).keys()
+
 
         return render(request, self.template_name, context=self.page_content)
 
