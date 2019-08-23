@@ -1,10 +1,13 @@
 from django.shortcuts import render, HttpResponse
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required #не позволяет просматривать вьюху без авторизации. (здорово)
 def profile_view(request):
+
     return render(request, 'registration/profile.html')
 
 
@@ -14,7 +17,7 @@ def sign_up_view(request):
 class SignUpFormView(FormView):
     form_class = UserCreationForm
 
-    
+
 
     success_url = "/accounts/login/"
 

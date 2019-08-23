@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'index'%}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -32,9 +32,9 @@
                             aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <a id="sign_up_button" href="{% url 'sign_up'%}" hidden><button type="button" class="btn btn-success"">Sing up</button></a>
-                <a id="login_button" href="{% url 'login'%}" hidden><button type="button" class="btn btn-dark"">Login</button></a>
-                <a id="logout_button" href="{% url 'logout'%}" hidden><button type="button" class="btn btn-dark"">Logout</button></a>
+                <a id="sign_up_button" href="{% url 'sign_up'%}" hidden><button type="button" class="btn btn-success">Sing up</button></a>
+                <a id="login_button" href="{% url 'login'%}" hidden><button type="button" class="btn btn-dark">Login</button></a>
+                <a id="logout_button" href="{% url 'logout'%}" hidden><button type="button" class="btn btn-dark">Logout</button></a>
             </div>
         </nav>
 
@@ -61,7 +61,7 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
 
-            
+
 
     </body>
 </html>
