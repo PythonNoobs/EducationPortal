@@ -87,7 +87,7 @@ class ActiveQuiz(models.Model):
     skip_flag = models.BooleanField(null=False, default=True)
 
     def __str__(self):
-        info = f'pk: {self.pk}, key: {self.active_quiz_key}, skip_flag: {self.skip_flag}, question_done_flag: {self.question_done_flag}'
+        info = f'pk: {self.pk}, question: {self.question.question_text}, correct : {self.correct_answer_flag}'
         return info
 
     @staticmethod
