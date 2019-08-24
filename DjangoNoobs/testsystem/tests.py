@@ -48,14 +48,14 @@ class CustomQuiz(TestCase):
             question_type='Single Answer',
             question_points=1,
             linked_quiz=quiz,
-            answers_dict="{'a1': 0, 'a2': 0}"
+            answers_dict={'a1': 0, 'a2': 0}
         )
 
-        self.assertIsInstance(question.get_answers(), dict)
+        self.assertIsInstance(question.answers_dict, dict)
 
     def test_answers_for_dict(self):
         """ get_answers() function test - (for correct format of questions)"""
         answers = [q.answers_dict for q in QuizQuestion.objects.all()]
 
         for answer in answers:
-            self.assertIsInstance(answer.get_answers(), dict)
+            self.assertIsInstance(answer.answers_dict, dict)
