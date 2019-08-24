@@ -1,8 +1,10 @@
 """
 Classes (Models) for Quiz application
 """
-from json import loads
+from json import load
 from django.db import models
+from django.contrib.postgres.fields import JSONField
+
 
 QUESTION_TYPES = [('Single Answer', 'Single Answer'),
                   ('Multi Answer', 'Multi Answer'),
@@ -50,7 +52,7 @@ class QuizQuestion(models.Model):
         max_length=20, null=True, choices=QUESTION_TYPES, default='Single Answer')
     question_points = models.IntegerField(null=False, default=1)
     linked_quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, null=False)
-    answers_dict = models.TextField(null=False, default='')
+    answers_dict = JSONField(default=dict)
 
     class Meta:
         verbose_name_plural = 'Quiz questions'
@@ -60,13 +62,6 @@ class QuizQuestion(models.Model):
         if len(self.question_text) > 30:
             return f'{str(self.question_text)[:30]}... ({self.linked_quiz})'
         return f'{str(self.question_text)[:30]} ({self.linked_quiz})'
-
-    def get_answers(self):
-        """
-        convert answer text to dictionary and return it
-        """
-        json_acceptable_string = self.answers_dict.replace("'", "\"")
-        return loads(json_acceptable_string)
 
 
 class ActiveQuiz(models.Model):

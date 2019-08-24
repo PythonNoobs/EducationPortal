@@ -1,4 +1,5 @@
 """ Views functions for Quiz application """
+from random import random
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import View, ListView
@@ -30,13 +31,15 @@ class QuizDetailsView(View):
 
         questions_id_list = [
             item.id for item in QuizQuestion.objects.filter(linked_quiz=quiz_id)]
+        
+        shuffled_questions_id_list = sorted(questions_id_list, key=lambda k: random())
 
         self.page_content['quiz_name'] = quiz.name
         self.page_content['quiz_category_name'] = quiz.category_name
         self.page_content['quiz_description'] = quiz.description
 
         self.page_content['active_quiz_key'] = ActiveQuiz.store_active_quiz_data(
-            questions_id_list,
+            shuffled_questions_id_list,
             self.page_content['quiz_name'],
             self.page_content['quiz_description'])
 
@@ -85,6 +88,7 @@ class ActiveQuizView(View):
                 'Exception raised: Only skipped question(s) remained')
 
         final_questions_list = questions_list_not_skipped
+        
         if not final_questions_list:
             raise StopQuiz('Exception raised: Quiz Finished !!!')
 
@@ -97,8 +101,7 @@ class ActiveQuizView(View):
         active_question = active_question_list.pop()
         self.page_content['active_quiz_key'] = active_quiz_key
         self.page_content['active_question'] = active_question
-        self.page_content['answers'] = active_question.question.get_answers(
-        ).keys()
+        self.page_content['answers'] = active_question.question.answers_dict.keys()
 
         return render(request, self.template_name, context=self.page_content)
 
@@ -111,7 +114,7 @@ class ActiveQuizView(View):
         try:
             answer_id = request.POST['answerOption']
         except MultiValueDictKeyError:
-            answer_id = None
+            _action = 'SKIP'
 
         if _action == 'SKIP':
             temp_act_quiz_obj = get_question_from_quiz(active_quiz_key, question_id)
@@ -139,8 +142,7 @@ class ActiveQuizView(View):
         active_question = active_question_list.pop()
         self.page_content['active_quiz_key'] = active_quiz_key
         self.page_content['active_question'] = active_question
-        self.page_content['answers'] = active_question.question.get_answers(
-        ).keys()
+        self.page_content['answers'] = active_question.question.answers_dict.keys()
 
 
         return render(request, self.template_name, context=self.page_content)

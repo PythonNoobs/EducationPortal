@@ -25,7 +25,6 @@ def check_answer(active_question, answer_id):
 
     :return: (boolean)
     """
-
-    if active_question.question.get_answers()[answer_id] == 1:
+    if active_question.question.answers_dict[answer_id] == 1:
         return True
     return False
