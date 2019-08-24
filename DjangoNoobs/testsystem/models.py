@@ -1,7 +1,6 @@
 """
 Classes (Models) for Quiz application
 """
-from json import load
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 

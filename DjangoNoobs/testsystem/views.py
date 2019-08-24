@@ -31,7 +31,7 @@ class QuizDetailsView(View):
 
         questions_id_list = [
             item.id for item in QuizQuestion.objects.filter(linked_quiz=quiz_id)]
-        
+
         shuffled_questions_id_list = sorted(questions_id_list, key=lambda k: random())
 
         self.page_content['quiz_name'] = quiz.name
@@ -88,7 +88,7 @@ class ActiveQuizView(View):
                 'Exception raised: Only skipped question(s) remained')
 
         final_questions_list = questions_list_not_skipped
-        
+
         if not final_questions_list:
             raise StopQuiz('Exception raised: Quiz Finished !!!')
 
