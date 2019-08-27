@@ -6,6 +6,8 @@
 
 <head>
   <meta charset="utf-8">
+  {% load static %}
+  <script src="{% static 'reg_general.js' %}"></script>
   <title>Login</title>
 </head>
 
@@ -57,21 +59,8 @@
 
 
   <script type="text/javascript">
-    function addClass(element, class_name) {
-      if (!element.classList.contains(class_name)) {
-        element.classList.add(class_name);
-      }
-    }
-
-    input_username = document.getElementById('id_username');
-    input_password = document.getElementById('id_password');
-
-    addClass(input_username, "form-control");
-    addClass(input_password, "form-control");
-
-    document.getElementById("sign_up_button").hidden = false;
-    document.getElementById("login_button").hidden = false;
-    document.getElementById("logout_button").hidden = true;
+    addClass(document.getElementById('id_username'), "form-control");
+    addClass(document.getElementById('id_password'), "form-control");
   </script>
 </body>
 {% endblock %}

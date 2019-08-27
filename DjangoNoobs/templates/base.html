@@ -35,9 +35,12 @@
                             aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <a id="sign_up_button" href="{% url 'sign_up'%}" hidden><button type="button" class="btn btn-success">Sing up</button></a>
-                <a id="login_button" href="{% url 'login'%}" hidden><button type="button" class="btn btn-dark">Login</button></a>
-                <a id="logout_button" href="{% url 'logout'%}" hidden><button type="button" class="btn btn-dark">Logout</button></a>
+                {% if user.is_authenticated %}
+                <a id="logout_button" href="{% url 'logout'%}"><button type="button" class="btn btn-dark">Logout</button></a>
+                {% else %}
+                <a id="sign_up_button" href="{% url 'sign_up'%}"><button type="button" class="btn btn-success">Sing up</button></a>
+                <a id="login_button" href="{% url 'login'%}"><button type="button" class="btn btn-dark">Login</button></a>
+                {% endif %} 
             </div>
         </nav>
 
