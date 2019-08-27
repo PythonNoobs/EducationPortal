@@ -15,14 +15,13 @@ Including another URLconf
 """
 
 from django.urls import path, include
-from django.conf.urls import url
 from . import views
 
 
 urlpatterns = [
-    url(r'', include('django.contrib.auth.urls')),
-    url(r'^profile/$', views.profile_view, name='profile'),
-    url(r'^sign_up/$', views.SignUpFormView.as_view(), name='sign_up'),
-    url(r'', views.profile_view, name='profile'),
+    path('', include('django.contrib.auth.urls')),
+    path('profile/', views.profile_view, name='profile'),
+    path('sign_up/', views.SignUpFormView.as_view(), name='sign_up'),
+    path('', views.profile_view, name='profile'),
 ]
 
