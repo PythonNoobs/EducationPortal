@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+    {% extends "base.html" %}
+    {% block content %}
+
+    <head>
+        <meta charset="utf-8">
+        <title>Result Page</title>
+    </head>
+    <body>
+        <h1> Quiz Result Page </h1>
+
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <p class="h2">You have finished the Quiz!</p>
+                    <p class="h4">Your results:</p>
+                    {% for item in quiz_results %}
+                    <p class="h6">{{item}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <a class="btn btn-primary mt-2" href="{% url 'test' %}" >Go Back to test page</a>
+        </div>
+    </body>
+    {% endblock %}
+</html>
