@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -18,16 +18,11 @@ class SignUpFormView(FormView):
     которая по умолчанию просто редиректит юзера по ссылке success_url."""
 
     form_class = UserCreationForm
-
-
-
     success_url = "/accounts/login/"
-
     template_name = "registration/sign_up.html/"
 
     def form_valid(self, form):
         form.save()
-
         return super(SignUpFormView, self).form_valid(form)
 
 
