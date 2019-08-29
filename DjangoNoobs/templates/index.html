@@ -9,7 +9,19 @@
     </head>
     <body>
 
-
+      <div class="container">
+          <div class="alert alert-info">
+            <p>
+              {% if user.is_authenticated %}
+                    Привет, {{ user.get_username }}.
+                     А мы уже без тебя заскучали!
+                      Как хорошо, что ты вернулся.
+              {% else %}
+                    Привет, нубик. Рады видеть тебя на PythonNoobs!
+              {% endif %}
+            </p>
+          </div>
+        </div>
 
     </body>
     {% endblock %}
