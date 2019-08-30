@@ -10,6 +10,9 @@ The creator our channel formulated the idea of our project next sentenses:
 # Authors
 Authors this project are members [python-noobs](https://telegram.im/info/python_noobs?lang=ru) channel in the Telegram.
 
+# Project Structure
+[Open structure](https://github.com/PythonNoobs/EducationPortal/blob/dev/Basic%20project%20structure.pdf)
+
 ## Quick start: 
 * Clone repository:
 `git clone https://github.com/PythonNoobs/EducationPortal.git <folder name>`
@@ -24,3 +27,5 @@ Authors this project are members [python-noobs](https://telegram.im/info/python_
 
 ## Branches
 **dev, master and prod** branches closed for push. You can make only pull request with 2 reviews from current repository participants.
+
+
