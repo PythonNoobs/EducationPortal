@@ -9,3 +9,18 @@ The creator our channel formulated the idea of our project next sentenses:
 
 # Authors
 Authors this project are members [python-noobs](https://telegram.im/info/python_noobs?lang=ru) channel in the Telegram.
+
+## Quick start: 
+* Clone repository:
+`git clone https://github.com/PythonNoobs/EducationPortal.git <folder name>`
+* Create virtual environment: `virtualenv -p python3.7 <name>`
+* Activate virtualenv(Linux): `/path/to/env/bin/activate`
+* Activate virtualenv(Windows): `\path\to\env\Scripts\activate`
+* Install requarements: `pip3 install -r requirements.txt`
+* Rename file: *_local_settings.py* to *local_settings.py*
+* Need to install PostgreSQL 10 or higher
+* Create and apply migrations: `python manage.py makemigrations` & `python manage.py migrate`
+* Start project: `python manage.py runserver`
+
+## Branches
+**dev, master and prod** branches closed for push. You can make only pull request with 2 reviews from current repository participants.
