@@ -110,3 +110,19 @@ class ActiveQuiz(models.Model):
             temp_active_quiz.save()
 
         return _id
+
+
+class HistoryQuiz(models.Model):
+    """
+    Class for store history of quiz results
+    """
+    active_quiz_key = models.CharField(max_length=50, null=False)
+    name = models.CharField(max_length=50, null=False, default=None)
+    category = models.CharField(max_length=50, null=False, default=None)
+    question = models.CharField(max_length=250, null=False, default=None)
+    correct_answer_flag = models.BooleanField(null=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    result = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.question, self.correct_answer_flag}'

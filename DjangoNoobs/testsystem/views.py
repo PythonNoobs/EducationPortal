@@ -1,10 +1,11 @@
 """ Views functions for Quiz application """
 from random import random
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import View, ListView
 from .models import Quiz, QuizQuestion, ActiveQuiz
-from .quizengine import get_question_from_quiz, check_answer
+from .quizengine import get_question_from_quiz, check_answer, store_quiz_to_history
 
 
 ### Views block
@@ -125,6 +126,7 @@ class ActiveQuizView(View):
             temp_act_quiz_obj = get_question_from_quiz(active_quiz_key, question_id)
             temp_act_quiz_obj.correct_answer_flag = check_answer(temp_act_quiz_obj, answer_id)
             temp_act_quiz_obj.question_done_flag = True
+            temp_act_quiz_obj.finished_at = datetime.now()
             temp_act_quiz_obj.save()
 
         try:
@@ -156,8 +158,8 @@ def result_page_view(request, active_quiz_key):
     :return: HttpResponse with 'testsystem/result_page.html' and 'page_content'
     """
     page_content = {}
-    page_content['quiz_results'] = ActiveQuiz.objects.filter(
-        active_quiz_key=active_quiz_key)
+    page_content['quiz_results'] = store_quiz_to_history(active_quiz_key)
+
     return render(request, 'testsystem/result_page.html', context=page_content)
 
 
