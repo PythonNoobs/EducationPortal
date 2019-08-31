@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Top Posts</title>
+{% endblock %}
+
+{% block content %}
+
+{% for post in object_list %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.text }}</p>
+    <small>{{ post.author.username }}{{ post.date|date:"d.M.Y" }}</small>
+    <hr>
+{% endfor %}
+
+{% endblock %}
+
