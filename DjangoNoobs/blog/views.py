@@ -1,9 +1,8 @@
 # from django.shortcuts import render
 from django.views.generic.list import ListView
-from .models import BlogPost
+from .models import Post
 
 
 class MainBlogPostList(ListView):
-    model = BlogPost
+    model = Post
     paginate_by = 10
-    ordering = ['-date']
