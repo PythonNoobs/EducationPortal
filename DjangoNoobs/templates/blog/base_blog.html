@@ -1,2 +1,14 @@
 {% extends 'base.html' %}
 
+{% block admin-panel %}
+
+    <a class="dropdown-item" href="{% url 'post_create_url' %}">Create Post</a>
+    <a class="dropdown-item" href="{% url 'category_create_url' %}">Create Category</a>
+    <a class="dropdown-item" href="{% url 'tag_create_url' %}">Create Tag</a>
+
+    <a href="{{ admin_object.get_update_url }}" class="dropdown-item"
+       style="{% if detail %}display: block;{% endif %}">Edit</a>
+    <a href="{{ admin_object.get_delete_url }}" class="dropdown-item"
+       style="{% if detail %}display: block;{% endif %}">Delete</a>
+
+{% endblock %}

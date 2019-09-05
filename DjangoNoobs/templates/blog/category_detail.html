@@ -1,16 +1,16 @@
 {% extends 'blog/base_blog.html' %}
 
 {% block title %}
-    <title>{{ tag.name }} - {{ block.super }}</title>
+    <title>{{ category.name }} - {{ block.super }}</title>
 {% endblock %}
 
 {% block content %}
 
     <h1 class="mt-5">
-        Posts with "{{ tag.name|title }}" tag
+        Posts with category "{{ category.name|title }}"
     </h1>
 
-    {% for post in tag.posts.all %}
+    {% for post in category.posts.all %}
         {% include 'blog/includes/post_card_template.html' %}
     {% endfor %}
 

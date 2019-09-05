@@ -65,7 +65,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
     # tags = models.ManyToManyField(Tag)
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
 

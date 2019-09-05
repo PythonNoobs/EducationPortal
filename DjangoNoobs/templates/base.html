@@ -34,12 +34,14 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">Blog</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'blog'%}">Blog</a>
-                            <a class="dropdown-item" href="#">Category</a>
-                            <a class="dropdown-item" href="#">Tags</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Edit</a> <!-- временно -->
-                            <a class="dropdown-item" href="#">Delete</a> <!-- временно -->
+                            <a class="dropdown-item" href="{% url 'posts_list_url'%}">Posts</a>
+                            <a class="dropdown-item" href="{% url 'category_list_url'%}">Categories</a>
+                            <a class="dropdown-item" href="{% url 'tags_list_url'%}">Tags</a>
+
+                            {% if request.user.is_authenticated and request.user.is_staff %}
+                                {% block admin-panel %}{%endblock%}
+                            {% endif %}
+
                         </div>
                     </li>
 
@@ -63,9 +65,42 @@
             </div>
         </nav>
 
-        {% block content %}
+        <div class="container mt-3">
+            <div class="row md-2">
+                <div class="col-8 offset-md-1">
 
-        {% endblock %}
+                    {% block content %}{% endblock %}
+
+                    {% if is_paginated %}
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item {% if not prev_url %} disabled {% endif %}">
+                                    <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+
+                                {% for n in page_object.paginator.page_range %}
+                                    {% if n == page_object.number %}
+                                        <li class="page-item active" aria-current="page">
+                                            <a class="page-link" href="?page={{ n }}">{{ n }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% elif n > page_object.number|add:-3 and n < page_object.number|add:3 %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <li class="page-item {% if not next_url %} disabled {% endif %}">
+                                    <a class="page-link" href="{{ next_url }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
         <hr>
         <footer class="container-fluid">
             <small class="text-muted">&copy; PythonNoobs {% now "Y" %}</small>
