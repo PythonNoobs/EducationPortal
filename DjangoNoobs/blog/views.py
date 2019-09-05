@@ -7,9 +7,9 @@ from .forms import TagForm, CategoryForm, PostForm
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 
 
-class MainBlogPostList(View):
-    model = Post
-    paginate_by = 10
+# class MainBlogPostList(View):
+# model = Post
+# paginate_by = 10
 
 
 def posts_list(request):
