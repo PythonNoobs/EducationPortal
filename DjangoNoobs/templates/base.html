@@ -29,9 +29,20 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'profile'%}">Profile <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'blog'%}">Blog <span class="sr-only">(current)</span></a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Blog</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'blog'%}">Blog</a>
+                            <a class="dropdown-item" href="#">Category</a>
+                            <a class="dropdown-item" href="#">Tags</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Edit</a> <!-- временно -->
+                            <a class="dropdown-item" href="#">Delete</a> <!-- временно -->
+                        </div>
                     </li>
+
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'test'%}">Test <span class="sr-only">(current)</span></a>
                     </li>
