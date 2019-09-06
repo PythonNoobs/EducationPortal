@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from time import time
 
 
 def gen_slug(s):
     new_slug = slugify(s, allow_unicode=True)  # need translit... Пока русские буквы остаются в slug
-    return new_slug
+    return new_slug + '-' + str(int(time()))
 
 
 class Tag(models.Model):
@@ -72,10 +73,10 @@ class Post(models.Model):
     title = models.CharField(max_length=150)
     # slug = models.CharField(max_length=256, blank=True, unique=True)
     slug = models.SlugField(max_length=200, blank=True, unique=True)
-    text = models.TextField()
+    text = models.TextField(blank=True)
     image = models.ImageField(blank=True, null=True)
 
-    create_date = models.DateTimeField(auto_now=True)
+    create_date = models.DateTimeField(auto_now_add=True)
     change_date = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -87,7 +88,7 @@ class Post(models.Model):
     def get_delete_url(self):
         return reverse('post_delete_url', kwargs={'slug': self.slug})
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # При сохранении не устанавливается автор, надо сделать current user
         if not self.id:
             self.slug = gen_slug(self.title)
         super().save(*args, **kwargs)

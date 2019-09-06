@@ -9,8 +9,19 @@
     <h1 class="mt-5">
         {{ post.title }}
     </h1>
+    <hr>
+    <p>Автор: {{ post.author }}</p>
+    <p>Категория: {{ post.category }}</p>
+    <p>Опубликовано: {{ post.create_date }}</p>
+    <p>Последнее изменение: {{ post.change_date }}</p>
+    <hr>
     <p>
-        {{ post.body }}
+        {{ post.text }}
     </p>
-
+    <p>
+        Tags:
+        {% for tag in post.tags.all %}
+            {{ tag }}
+        {% endfor %}
+    </p>
 {% endblock %}
