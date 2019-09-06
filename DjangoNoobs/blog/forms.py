@@ -16,8 +16,9 @@ class TagForm(forms.ModelForm):
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
             raise ValidationError('Slug may not be "Create"')
-        if Tag.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError('Slug "{}" is already'.format(new_slug))
+        # Пока эта проверка мешает редактированию объекта, так как не дает сохранить слаг без изменения
+        # if Tag.objects.filter(slug__iexact=new_slug).count():
+        #    raise ValidationError('Slug "{}" is already'.format(new_slug))
         return new_slug
 
 
@@ -35,8 +36,9 @@ class CategoryForm(forms.ModelForm):
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
             raise ValidationError('Slug may not be "Create"')
-        if Category.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError('Slug "{}" is already'.format(new_slug))
+        # Пока эта проверка мешает редактированию объекта, так как не дает сохранить слаг без изменения
+        # if Category.objects.filter(slug__iexact=new_slug).count():
+        #     raise ValidationError('Slug "{}" is already'.format(new_slug))
         return new_slug
 
 
@@ -58,6 +60,7 @@ class PostForm(forms.ModelForm):
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
             raise ValidationError('Slug may not be "Create"')
-        if Post.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError('Slug "{}" is already'.format(new_slug))
+        # Пока эта проверка мешает редактированию объекта, так как не дает сохранить слаг без изменения
+        # if Post.objects.filter(slug__iexact=new_slug).count():
+        #    raise ValidationError('Slug "{}" is already'.format(new_slug))
         return new_slug
