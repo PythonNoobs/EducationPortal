@@ -1,14 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
-from django.utils import timezone
-from django.utils.text import slugify
-from time import time
-
-
-def gen_slug(s):
-    new_slug = slugify(s, allow_unicode=True)  # need translit... Пока русские буквы остаются в slug
-    return new_slug + '-' + str(int(time()))
+from uuslug import slugify
 
 
 class Tag(models.Model):
@@ -27,7 +20,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = gen_slug(self.name)
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -54,7 +47,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = gen_slug(self.name)
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -90,7 +83,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):  # При сохранении не устанавливается автор, надо сделать current user
         if not self.id:
-            self.slug = gen_slug(self.title)
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
