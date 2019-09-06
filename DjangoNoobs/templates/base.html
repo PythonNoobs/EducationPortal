@@ -2,13 +2,15 @@
 <html lang="ru">
     <head>
         <meta charset="utf-8">
-        <!--Не ставьте здесь заголовок, он на все страницы распространяется-->
+        {% block title %}{% endblock %}
 
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossorigin="anonymous">
+        {% block style %}{% endblock %}
+        {% block headscript %}{% endblock %}
     </head>
 
     <body>
@@ -28,7 +30,7 @@
                         <a class="nav-link" href="{% url 'profile'%}">Profile <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="/admin/">Admin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#" tabindex="-1"
@@ -36,14 +38,13 @@
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
-                <a id="logout_button" href="{% url 'logout'%}"><button type="button" class="btn btn-dark">Logout</button></a>
+                    <a id="logout_button" href="{% url 'logout'%}"><button type="button" class="btn btn-dark">Logout</button></a>
                 {% else %}
-                <a id="sign_up_button" href="{% url 'sign_up'%}"><button type="button" class="btn btn-success">Sing up</button></a>
-                <a id="login_button" href="{% url 'login'%}"><button type="button" class="btn btn-dark">Login</button></a>
-                {% endif %} 
+                    <a id="sign_up_button" href="{% url 'sign_up'%}"><button type="button" class="btn btn-success">Sing up</button></a>
+                    <a id="login_button" href="{% url 'login'%}"><button type="button" class="btn btn-dark">Login</button></a>
+                {% endif %}
             </div>
         </nav>
-
 
         {% block content %}
 
@@ -53,8 +54,8 @@
             <small class="text-muted">&copy; PythonNoobs {% now "Y" %}</div>
         </footer>
 
-
         <!-- SCRIPTS -->
+        {% block footscript %}{% endblock %}
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
@@ -66,8 +67,6 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
-
 
     </body>
 </html>
