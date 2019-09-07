@@ -81,9 +81,10 @@ class Post(models.Model):
     def get_delete_url(self):
         return reverse('post_delete_url', kwargs={'slug': self.slug})
 
-    def save(self, *args, **kwargs):  # При сохранении не устанавливается автор, надо сделать current user
-        if not self.id:
-            self.slug = slugify(self.title)
+    # При сохранении не устанавливается автор, надо сделать current user
+    def save(self, *args, **kwargs):
+        if self.id:
+            self.slug = slugify(self.title + str(self.id))
         super().save(*args, **kwargs)
 
     def __str__(self):
