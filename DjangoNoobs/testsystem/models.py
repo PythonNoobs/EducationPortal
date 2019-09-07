@@ -3,7 +3,7 @@ Classes (Models) for Quiz application
 """
 from django.db import models
 from django.contrib.postgres.fields import JSONField
-
+from django.contrib.auth.models import User
 
 QUESTION_TYPES = [('Single Answer', 'Single Answer'),
                   ('Multi Answer', 'Multi Answer'),
@@ -123,6 +123,7 @@ class HistoryQuiz(models.Model):
     correct_answer_flag = models.BooleanField(null=True)
     finished_at = models.DateTimeField(null=True, blank=True)
     result = models.IntegerField(default=0)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)
 
     def __str__(self):
         return f'{self.question, self.correct_answer_flag}'

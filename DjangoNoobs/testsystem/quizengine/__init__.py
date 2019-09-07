@@ -30,7 +30,7 @@ def check_answer(active_question, answer_id):
     return False
 
 
-def store_quiz_to_history(active_quiz_key):
+def store_quiz_to_history(active_quiz_key, _user_inctance=None):
     """ storing active quiz to the history quiz table
     and deletes it from active quiz table
 
@@ -50,6 +50,7 @@ def store_quiz_to_history(active_quiz_key):
         temp_history_item.correct_answer_flag = item.correct_answer_flag
         temp_history_item.finished_at = item.finished_at
         temp_history_item.result = item.result
+        temp_history_item.user_id = _user_inctance
         temp_history_item.save()
 
     ActiveQuiz.objects.filter(active_quiz_key=active_quiz_key).delete()

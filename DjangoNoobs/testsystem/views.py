@@ -1,6 +1,7 @@
 """ Views functions for Quiz application """
 from random import random
 from datetime import datetime
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import View, ListView
@@ -157,8 +158,14 @@ def result_page_view(request, active_quiz_key):
 
     :return: HttpResponse with 'testsystem/result_page.html' and 'page_content'
     """
+
+    if request.user.is_authenticated:
+        _user_inctance = User.objects.get(pk=request.user.id) 
+    else:
+        _user_inctance = None
+
     page_content = {}
-    page_content['quiz_results'] = store_quiz_to_history(active_quiz_key)
+    page_content['quiz_results'] = store_quiz_to_history(active_quiz_key, _user_inctance)
 
     return render(request, 'testsystem/result_page.html', context=page_content)
 
