@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 
 
+# Mixin for render list page Post, Tag, Category
 class ObjectListMixin:
     model = None
     template = None
@@ -36,6 +37,7 @@ class ObjectListMixin:
         return render(request, self.template, context=context)
 
 
+# Mixin for render detail page for Post, Tag, Category
 class ObjectDetailMixin:
     model = None
     template = None
@@ -48,6 +50,7 @@ class ObjectDetailMixin:
                                                        })
 
 
+# Mixin for render create page for Post, Tag, Category
 class ObjectCreateMixin:
     form_model = None
     template = None
@@ -65,6 +68,7 @@ class ObjectCreateMixin:
         return render(request, self.template, context={'form': bound_form})
 
 
+# Mixin for render delete page for Post, Tag, Category
 class ObjectUpdateMixin:
     model = None
     form_model = None

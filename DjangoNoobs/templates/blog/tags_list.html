@@ -9,7 +9,7 @@
     <h1 class="mb-5">Tags:</h1>
 
     {% for tag in page_object.object_list %}
-        <h3><a href="{{ tag.get_absolute_url }}">{{tag.name }}</a></h3>
+        <a href="{{ tag.get_absolute_url }}" class="btn btn-secondary btn-sm">{{tag.name }}</a>
     {% endfor %}
 
 {% endblock %}

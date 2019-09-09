@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
 from .models import Tag, Category, Post
-from .forms import TagForm, CategoryForm, PostForm
-from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin, ObjectListMixin
+from .forms import CategoryForm
+from .forms import PostForm
+from .forms import TagForm
+from .utils import ObjectDetailMixin
+from .utils import ObjectCreateMixin
+from .utils import ObjectUpdateMixin
+from .utils import ObjectDeleteMixin
+from .utils import ObjectListMixin
 
 
 class PostList(ObjectListMixin, View):
@@ -23,24 +28,6 @@ class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
     template = 'blog/post_create.html'
     raise_exception = True
 
-# для @DanInSpace
-# нет необходимости использовать отдельный метод, возврат к миксину, автор устанавливается
-# def post_create(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.save()
-#             post.slug = slugify(post.title + str(post.id))
-#             list_tags = request.POST.getlist('tags')
-#             post.tags.add(*list_tags)
-#             post.save()
-#             return redirect('/blog/post/' + str(post.slug))
-#     else:
-#         form = PostForm()
-#         return render(request, 'blog/post_create.html', {'form': form})
-
 
 class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     model = Post
@@ -51,7 +38,7 @@ class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
 
 class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Post
-    template = 'blog/post_delete.html'
+    template = 'blog/includes/post_delete_dialog.html'
     redirect_url = 'posts_list_url'
     raise_exception = True
 
@@ -59,13 +46,7 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 class TagList(ObjectListMixin, View):
     model = Tag
     template = 'blog/tags_list.html'
-    paginate_items = 10
-
-
-# Delete after check mixin
-def tags_list(request):
-    tags = Tag.objects.all()
-    return render(request, 'blog/tags_list.html', context={'tags': tags})
+    paginate_items = 100
 
 
 class TagDetails(ObjectDetailMixin, View):
@@ -88,7 +69,7 @@ class TagUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
 
 class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Tag
-    template = 'blog/tag_delete.html'
+    template = 'blog/includes/tag_delete_dialog.html'
     redirect_url = 'tags_list_url'
     raise_exception = True
 
@@ -97,12 +78,6 @@ class CategoryList(ObjectListMixin, View):
     model = Category
     template = 'blog/category_list.html'
     paginate_items = 10
-
-
-# Delete after check mixin
-def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'blog/category_list.html', context={'categories': categories})
 
 
 class CategoryDetails(ObjectDetailMixin, View):
@@ -125,6 +100,6 @@ class CategoryUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
 
 class CategoryDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Category
-    template = 'blog/category_delete.html'
+    template = 'blog/includes/category_delete_dialog.html'
     redirect_url = 'category_list_url'
     raise_exception = True

@@ -6,6 +6,15 @@
 
 {% block content %}
 
+    {% if detail and request.user.is_staff %}
+        <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#categoryDeleteModal">
+            Удалить
+        </button>
+        {% include 'blog/includes/category_delete_dialog.html' %}
+    {% endif %}
+
     <h1 class="mt-5">
         Posts with category "{{ category.name|title }}"
     </h1>

@@ -3,15 +3,16 @@
         Опубликовано {{ post.create_date }} пользователем {{ post.author }}
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ post.title }}</h5>
+        <h3 class="card-title">{{ post.title }}</h3>
         <p class="card-text">{{ post.text|truncatewords:15 }}</p>
-        <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Читать</a>
+        <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
     </div>
     <div class="card-footer text-muted">
-        Категория: <a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a>
+        Категория:
+        <a href="{{ post.category.get_absolute_url }}" class="btn-success btn-sm">{{ post.category.name }}</a>
         Теги:
         {% for tag in post.tags.all %}
-            <a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+            <a href="{{ tag.get_absolute_url }}" class="btn-secondary btn-sm">{{ tag.name }}</a>
         {% endfor %}
     </div>
 </div>
