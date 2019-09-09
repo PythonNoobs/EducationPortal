@@ -4,40 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from .models import Tag, Category, Post
 from .forms import TagForm, CategoryForm, PostForm
-from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
+from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin, ObjectListMixin
 
 
-def posts_list(request):
-    posts = Post.objects.all()
-    paginator = Paginator(posts, 10)
-
-    page_number = request.GET.get('page', 1)  # default = 1
-    page = paginator.get_page(page_number)
-
-    is_paginated = page.has_other_pages()
-
-    if page.has_previous():
-        prev_url = '?page={}'.format(page.previous_page_number())
-    else:
-        prev_url = ''
-
-    if page.has_next():
-        next_url = '?page={}'.format(page.next_page_number())
-    else:
-        next_url = ''
-
-    context = {
-        'page_object': page,
-        'is_paginated': is_paginated,
-        'prev_url': prev_url,
-        'next_url': next_url
-    }
-    return render(request, 'blog/post_list.html', context=context)
-
-
-class PostList(View):
+class PostList(ObjectListMixin, View):
     model = Post
     template = 'blog/post_list.html'
+    paginate_items = 10
 
 
 class PostDetail(ObjectDetailMixin, View):
@@ -83,6 +56,13 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     raise_exception = True
 
 
+class TagList(ObjectListMixin, View):
+    model = Tag
+    template = 'blog/tags_list.html'
+    paginate_items = 10
+
+
+# Delete after check mixin
 def tags_list(request):
     tags = Tag.objects.all()
     return render(request, 'blog/tags_list.html', context={'tags': tags})
@@ -113,6 +93,13 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     raise_exception = True
 
 
+class CategoryList(ObjectListMixin, View):
+    model = Category
+    template = 'blog/category_list.html'
+    paginate_items = 10
+
+
+# Delete after check mixin
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'blog/category_list.html', context={'categories': categories})
