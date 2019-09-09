@@ -5,7 +5,6 @@ from django.core.paginator import Paginator
 from .models import Tag, Category, Post
 from .forms import TagForm, CategoryForm, PostForm
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
-from uuslug import slugify
 
 
 def posts_list(request):
@@ -33,7 +32,12 @@ def posts_list(request):
         'prev_url': prev_url,
         'next_url': next_url
     }
-    return render(request, 'blog/blog_index.html', context=context)
+    return render(request, 'blog/post_list.html', context=context)
+
+
+class PostList(View):
+    model = Post
+    template = 'blog/post_list.html'
 
 
 class PostDetail(ObjectDetailMixin, View):
@@ -41,25 +45,28 @@ class PostDetail(ObjectDetailMixin, View):
     template = 'blog/post_detail.html'
 
 
-# class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
-#     form_model = PostForm
-#     template = 'blog/post_create.html'
-#     raise_exception = True
-def post_create(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            post.slug = slugify(post.title + str(post.id))
-            list_tags = request.POST.getlist('tags')
-            post.tags.add(*list_tags)
-            post.save()
-            return redirect('/blog/post/' + str(post.slug))
-    else:
-        form = PostForm()
-        return render(request, 'blog/post_create.html', {'form': form})
+class PostCreate(LoginRequiredMixin, ObjectCreateMixin, View):
+    form_model = PostForm
+    template = 'blog/post_create.html'
+    raise_exception = True
+
+# для @DanInSpace
+# нет необходимости использовать отдельный метод, возврат к миксину, автор устанавливается
+# def post_create(request):
+#     if request.method == "POST":
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post.save()
+#             post.slug = slugify(post.title + str(post.id))
+#             list_tags = request.POST.getlist('tags')
+#             post.tags.add(*list_tags)
+#             post.save()
+#             return redirect('/blog/post/' + str(post.slug))
+#     else:
+#         form = PostForm()
+#         return render(request, 'blog/post_create.html', {'form': form})
 
 
 class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):

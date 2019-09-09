@@ -6,7 +6,6 @@ from uuslug import slugify
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    # slug = models.CharField(max_length=256, blank=True, unique=True)
     slug = models.SlugField(max_length=50, blank=True, unique=True)
 
     def get_absolute_url(self):
@@ -19,8 +18,8 @@ class Tag(models.Model):
         return reverse('tag_delete_url', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(self.name)
+        #if not self.id:
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -32,7 +31,6 @@ class Tag(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
-    # slug = models.CharField(max_length=200, blank=True, unique=True)
     slug = models.SlugField(max_length=150, blank=True, unique=True)
     description = models.TextField()
 
@@ -46,8 +44,8 @@ class Category(models.Model):
         return reverse('category_delete_url', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(self.name)
+        #if not self.id:
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -60,11 +58,9 @@ class Category(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
-    # tags = models.ManyToManyField(Tag)
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
 
     title = models.CharField(max_length=150)
-    # slug = models.CharField(max_length=256, blank=True, unique=True)
     slug = models.SlugField(max_length=200, blank=True, unique=True)
     text = models.TextField(blank=True)
     image = models.ImageField(blank=True, null=True)
@@ -81,19 +77,16 @@ class Post(models.Model):
     def get_delete_url(self):
         return reverse('post_delete_url', kwargs={'slug': self.slug})
 
-    # При сохранении не устанавливается автор, надо сделать current user
     def save(self, *args, **kwargs):
-        if self.id:
-            self.slug = slugify(self.title + str(self.id))
+        # if not self.id:
+        self.slug = slugify(self.title)
+        #    self.change_date = timezone.localtime(timezone.now()).date()
+        #    self.slug = self.title
         super().save(*args, **kwargs)
 
     def __str__(self):
         # return str(self.change_date) + ' ' + str(self.title)
         return str(self.title)
-
-    # def save(self):
-    #    self.change_date = timezone.localtime(timezone.now()).date()
-    #    self.slug = self.title
 
     class Meta:
         ordering = ['-create_date']

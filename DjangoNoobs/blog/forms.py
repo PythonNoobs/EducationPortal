@@ -18,7 +18,7 @@ class TagForm(forms.ModelForm):
             raise ValidationError('Slug may not be "Create"')
         # Пока эта проверка мешает редактированию объекта, так как не дает сохранить слаг без изменения
         # if Tag.objects.filter(slug__iexact=new_slug).count():
-        #    raise ValidationError('Slug "{}" is already'.format(new_slug))
+        #   raise ValidationError('Slug "{}" is already'.format(new_slug))
         return new_slug
 
 
@@ -37,8 +37,8 @@ class CategoryForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('Slug may not be "Create"')
         # Пока эта проверка мешает редактированию объекта, так как не дает сохранить слаг без изменения
-        # if Category.objects.filter(slug__iexact=new_slug).count():
-        #     raise ValidationError('Slug "{}" is already'.format(new_slug))
+        #if Category.objects.filter(slug__iexact=new_slug).count():
+         #   raise ValidationError('Slug "{}" is already'.format(new_slug))
         return new_slug
 
 
@@ -46,11 +46,11 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         # fields = ['title', 'author', 'slug', 'category', 'tags', 'text', 'image']
-        fields = ['title', 'category', 'tags', 'text', 'image']
+        fields = ['title', 'slug', 'category', 'tags', 'text', 'image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            # 'author': forms.Select(attrs={'class': 'form-control'}),  # временно, пока не сделаем current user
-            # 'slug': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'author': forms.Select(attrs={'class': 'form-control'}),  # авто устанавливается из user
+            'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
             'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={'class': 'form-control'}),
