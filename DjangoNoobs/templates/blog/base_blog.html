@@ -7,10 +7,4 @@
     <a class="dropdown-item" href="{% url 'category_create_url' %}">Create Category</a>
     <a class="dropdown-item" href="{% url 'tag_create_url' %}">Create Tag</a>
 
-    {% if detail and request.user.is_staff %}
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{{ admin_object.get_update_url }}">Edit "{{ admin_object|title }}"</a>
-        <a class="dropdown-item" href="{{ admin_object.get_delete_url }}">Delete "{{ admin_object|title }}"</a>
-    {% endif %}
-
 {% endblock %}

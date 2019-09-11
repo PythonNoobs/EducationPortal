@@ -68,7 +68,7 @@ class ObjectCreateMixin:
         return render(request, self.template, context={'form': bound_form})
 
 
-# Mixin for render delete page for Post, Tag, Category
+# Mixin for render edit page for Post, Tag, Category
 class ObjectUpdateMixin:
     model = None
     form_model = None
@@ -88,6 +88,7 @@ class ObjectUpdateMixin:
         return render(request, self.template, context={'form': bound_form, self.model.__name__.lower(): obj})
 
 
+# Mixin for render delete page for Post, Tag, Category
 class ObjectDeleteMixin:
     model = None
     template = None

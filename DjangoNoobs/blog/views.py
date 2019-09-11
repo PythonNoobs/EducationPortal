@@ -1,4 +1,3 @@
-from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tag, Category, Post
@@ -77,7 +76,7 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 class CategoryList(ObjectListMixin, View):
     model = Category
     template = 'blog/category_list.html'
-    paginate_items = 10
+    paginate_items = 100
 
 
 class CategoryDetails(ObjectDetailMixin, View):
