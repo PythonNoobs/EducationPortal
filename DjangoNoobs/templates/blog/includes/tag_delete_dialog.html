@@ -1,23 +1,10 @@
-<div class="modal fade" id="tagDeleteModal" tabindex="-1" role="dialog"
-     aria-labelledby="tagDeleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tagDeleteModalLabel">Удаление тега</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <form class="" action="{{ tag.get_delete_url }}" method="post" id="tagDeleteForm">
-            {% csrf_token %}
-            <p>Вы уверены, что хотите удалить тег <b>"{{ tag.name|title }}"</b>?</p>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <input class="btn btn-danger" type="submit" form="tagDeleteForm" value="Удалить">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-      </div>
+{% extends 'blog/includes/delete_dialog.html' %}
+
+{% block delete-dialog %}
+    <div class="modal-body">
+        <form class="" action="{{ tag.get_delete_url }}" method="post" id="deleteForm">
+          {% csrf_token %}
+          <p>Вы уверены, что хотите удалить тег <b>"{{ tag.name|title }}"</b>?</p>
+        </form>
     </div>
-  </div>
-</div>
+{% endblock %}

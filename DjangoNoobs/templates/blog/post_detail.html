@@ -28,7 +28,7 @@
             {% if detail and request.user.is_staff %}
                 <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
 
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#postDeleteModal">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                     Удалить
                 </button>
                 {% include 'blog/includes/post_delete_dialog.html' %}
