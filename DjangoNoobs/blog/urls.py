@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 # from . import views
 from .views import *
@@ -7,7 +8,7 @@ urlpatterns = [
     # path('', posts_list, name='posts_list_url'),
     path('', PostList.as_view(), name='posts_list_url'),
     path('post/create/', PostCreate.as_view(), name='post_create_url'),
-    path('post/<str:slug>/', PostDetail.as_view(), name='post_detail_url'),
+    # path('post/<str:slug>/', PostDetail.as_view(), name='post_detail_url'),  # don't delete this
     path('post/<str:slug>/update/', PostUpdate.as_view(), name='post_update_url'),
     path('post/<str:slug>/delete/', PostDelete.as_view(), name='post_delete_url'),
 
@@ -24,4 +25,8 @@ urlpatterns = [
     path('category/<str:slug>/', CategoryDetails.as_view(), name='category_detail_url'),
     path('category/<str:slug>/update/', CategoryUpdate.as_view(), name='category_update_url'),
     path('category/<str:slug>/delete/', CategoryDelete.as_view(), name='category_delete_url'),
+
+    # For comments (TEST ROUT)
+    path('post/<str:slug>/', PostDetail.as_view(), name='post_detail_url'),
+    path('post/<str:slug>/comment/', add_comment, name='post_comment_url'),
 ]

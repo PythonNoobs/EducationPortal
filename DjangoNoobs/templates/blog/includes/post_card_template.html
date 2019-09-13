@@ -8,6 +8,7 @@
         <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
     </div>
     <div class="card-footer text-muted">
+        Комментариев: {{ post.comment_set.count }}.
         Категория:
         <a href="{{ post.category.get_absolute_url }}" class="btn-success btn-sm">{{ post.category.name }}</a>
         Теги:

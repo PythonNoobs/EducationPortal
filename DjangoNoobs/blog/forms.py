@@ -57,3 +57,16 @@ class PostForm(forms.ModelForm):
         if Post.objects.filter(name__iexact=new_title).count():
             raise ValidationError('Пост "{}" уже существует'.format(new_title))
         return new_title
+
+
+class CommentForm(forms.Form):
+
+    parent_comment = forms.IntegerField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+
+    comment_area = forms.CharField(
+        label="Написать комментарий",
+        widget=forms.Textarea(attrs={'class': 'form-control'})
+    )

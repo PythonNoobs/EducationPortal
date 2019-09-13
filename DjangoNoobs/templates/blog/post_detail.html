@@ -24,21 +24,74 @@
                 <a href="{{ tag.get_absolute_url }}" class="btn-secondary btn-sm">{{ tag.name }}</a>
             {% endfor %}
         </div>
-        <div class="card-footer text-muted">
-            {% if detail and request.user.is_staff %}
-                <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
 
+        {% if detail and request.user.is_staff %}
+            <div class="card-footer text-muted">
+                <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                     Удалить
                 </button>
                 {% include 'blog/includes/post_delete_dialog.html' %}
+            </div>
+        {% endif %}
 
+        <div class="card-footer text-muted">
+
+            {% for comment in comments %}
+                <a name="comment-{{ comment.id }}"></a>
+                <div class="container">
+                    <div class="row justify-content-start" id="{{ comment.id }}">
+                        <div class="col-md-{{ comment.get_col }} offset-md-{{ comment.get_offset }}">
+                            <div class="card bg-light mb-2">
+                                <div class="card-header">
+                                    <strong>{{ comment.author_id.username }}</strong> написал
+                                    {{ comment.pub_date }}
+                                    <a href="#comment-{{ comment.id }}">#</a>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{ comment.content|safe }}</p>
+                                    {% if form %}
+                                        <button type="button" class="btn-primary btn-sm"
+                                                onclick="return show_comments_form({{ comment.id }})">
+                                            Ответить
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if form %}
+                <div class="container">
+                    <h5>Написать комментарий</h5>
+                    <form id="comment_form" action="{{ post.get_comment_url }}" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                {% if field.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Комментировать</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="container">
+                    <div class="card border-warning mb-3">
+                        <div class="card-header">Комментировать</div>
+                        <div class="card-body text-warning">
+                            <p class="card-text">Только авторизованные пользователи могут оставлять комментарии</p>
+                        </div>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>
-
-
-
-
-
 {% endblock %}
