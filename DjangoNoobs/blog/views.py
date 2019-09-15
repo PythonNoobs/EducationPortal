@@ -1,7 +1,7 @@
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render_to_response, redirect, render
+from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.template.context_processors import csrf
 from django.views.decorators.http import require_http_methods
@@ -123,7 +123,6 @@ class PostDetail(View):
         post = get_object_or_404(Post, slug__iexact=slug)
         context = {}
         context.update(csrf(request))
-        # user = auth.get_user(request)
         user = request.user
         context['post'] = post
         context['comments'] = post.comment_set.all().order_by('path')
