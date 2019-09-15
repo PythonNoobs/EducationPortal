@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <h1 class="mb-5">Tags:</h1>
+    <h2 class="mb-5">Теги:</h2>
 
     {% for tag in page_object.object_list %}
         <a href="{{ tag.get_absolute_url }}" class="btn btn-secondary btn-sm">{{tag.name }}</a>

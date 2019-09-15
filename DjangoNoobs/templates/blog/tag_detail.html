@@ -20,7 +20,9 @@
     </h1>
 
     {% for post in tag.posts.all %}
-        {% include 'blog/includes/post_card_template.html' %}
+        <div class="card mb-2">
+            {% include 'blog/includes/post_card_template.html' %}
+        </div>
     {% endfor %}
 
 {% endblock %}

@@ -6,11 +6,11 @@
 
 {% block content %}
 
-    <h1 class="mb-5">Posts:</h1>
+    <h2 class="mb-5">Posts:</h2>
 
     {% for post in page_object.object_list %}
-
-        {% include 'blog/includes/post_card_template.html' %}
-
+        <div class="card mb-2">
+            {% include 'blog/includes/post_card_template.html' %}
+        </div>
     {% endfor %}
 {% endblock %}

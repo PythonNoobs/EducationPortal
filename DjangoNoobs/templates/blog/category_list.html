@@ -6,10 +6,10 @@
 
 {% block content %}
 
-    <h1 class="mb-5">Categories:</h1>
+    <h2 class="mb-5">Категории с указанием количества постов:</h2>
 
     {% for category in page_object.object_list %}
-        <h3><a href="{{ category.get_absolute_url }}">{{category.name }}</a></h3>
+        <h4><a href="{{ category.get_absolute_url }}">{{category.name }} ({{ category.posts.count }})</a></h4>
     {% endfor %}
 
 {% endblock %}

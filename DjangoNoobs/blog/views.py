@@ -127,7 +127,6 @@ class PostDetail(View):
         context['post'] = post
         context['comments'] = post.comment_set.all().order_by('path')
         context['next'] = post.get_absolute_url()
-        context['detail'] = True
         context['admin_object'] = post
 
         if user.is_authenticated:
