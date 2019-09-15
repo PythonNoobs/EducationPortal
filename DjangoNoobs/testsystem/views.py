@@ -111,10 +111,10 @@ class ActiveQuizView(View):
         """ POST """
         _action = request.POST['id_action']
         question_id = request.POST['id_question']
-        answer_id = None
+        answer_id_list = None
 
         try:
-            answer_id = request.POST['answerOption']
+            answer_id_list = request.POST.getlist('answerOption')
         except MultiValueDictKeyError:
             _action = 'SKIP'
 
@@ -125,7 +125,7 @@ class ActiveQuizView(View):
 
         if _action == 'SUBMIT':
             temp_act_quiz_obj = get_question_from_quiz(active_quiz_key, question_id)
-            temp_act_quiz_obj.correct_answer_flag = check_answer(temp_act_quiz_obj, answer_id)
+            temp_act_quiz_obj.correct_answer_flag = check_answer(temp_act_quiz_obj, answer_id_list)
             temp_act_quiz_obj.question_done_flag = True
             temp_act_quiz_obj.finished_at = datetime.now()
             temp_act_quiz_obj.save()

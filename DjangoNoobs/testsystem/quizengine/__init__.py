@@ -17,16 +17,28 @@ def get_question_from_quiz(active_quiz_key, question_id):
         active_quiz_key=active_quiz_key, question=question_id)
 
 
-def check_answer(active_question, answer_id):
+def check_answer(active_question, answer_id_list):
     """ checking answer for correct or not
     :param active_question: (ActiveQuiz)
 
-    :param answer_id: (string) id of current answer
+    :param answer_id_list: (string) list of ids of current answer
 
     :return: (boolean)
     """
-    if active_question.question.answers_dict[answer_id] == 1:
-        return True
+    _question_type = active_question.question.question_type
+    _answers_dict = active_question.question.answers_dict
+    _question_check_sum = sum(active_question.question.answers_dict.values())
+    _answers_check_sum = 0
+    if _question_type == 'Single Answer':
+        if _answers_dict[answer_id_list[0]] == 1:
+            return True
+    elif _question_type == 'Multi Answer':
+        for answer in answer_id_list:
+            if _answers_dict[answer] == 1:
+                _answers_check_sum = _answers_check_sum + 1
+                
+        if _answers_check_sum == _question_check_sum:
+            return True
     return False
 
 
