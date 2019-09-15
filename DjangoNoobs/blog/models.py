@@ -97,13 +97,6 @@ class Mark(models.Model):
     score = models.FloatField()
 
 
-# class Comment(models.Model):
-#     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='comment')
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment')
-#     create_date = models.DateTimeField(auto_now=True)
-#     change_date = models.DateTimeField(default=create_date)
-
-
 class Comment(models.Model):
     class Meta:
         db_table = "comments"

@@ -8,5 +8,6 @@ function show_comments_form(parent_comment_id)
     {
         $("#id_parent_comment").val(parent_comment_id);
     }
-    $("#comment_form").insertAfter("#" + parent_comment_id);
+    document.getElementById("comment_button").value = "Ответить";
+    $("#comment_form_container").insertAfter("#" + parent_comment_id);
 }
