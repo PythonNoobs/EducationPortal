@@ -29,13 +29,18 @@ def check_answer(active_question, answer_id_list):
     _answers_dict = active_question.question.answers_dict
     _question_check_sum = sum(active_question.question.answers_dict.values())
     _answers_check_sum = 0
+
     if _question_type == 'Single Answer':
         if _answers_dict[answer_id_list[0]] == 1:
             return True
+
     elif _question_type == 'Multi Answer':
         for answer in answer_id_list:
             if _answers_dict[answer] == 1:
                 _answers_check_sum = _answers_check_sum + 1
+
+            if _answers_dict[answer] == 0:
+                return False
                 
         if _answers_check_sum == _question_check_sum:
             return True
@@ -68,3 +73,16 @@ def store_quiz_to_history(active_quiz_key, _user_inctance=None):
     ActiveQuiz.objects.filter(active_quiz_key=active_quiz_key).delete()
 
     return HistoryQuiz.objects.filter(active_quiz_key=active_quiz_key)
+
+
+def get_result_quiz_points(active_quiz_key):
+    """ returns sum of points for finished quiz (from History table)
+
+    :param active_quiz_key: active_quiz_key: (str) id key of action quiz
+    :return:
+    """
+    history_quiz = HistoryQuiz.objects.filter(active_quiz_key=active_quiz_key)
+    points_list = [p.result for p in history_quiz]
+    points_summary = sum(points_list)
+
+    return points_summary

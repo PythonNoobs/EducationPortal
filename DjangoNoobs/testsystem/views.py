@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.generic import View, ListView
 from .models import Quiz, QuizQuestion, ActiveQuiz
-from .quizengine import get_question_from_quiz, check_answer, store_quiz_to_history
+from .quizengine import get_question_from_quiz, check_answer, store_quiz_to_history, get_result_quiz_points
 
 
 ### Views block
@@ -126,6 +126,10 @@ class ActiveQuizView(View):
         if _action == 'SUBMIT':
             temp_act_quiz_obj = get_question_from_quiz(active_quiz_key, question_id)
             temp_act_quiz_obj.correct_answer_flag = check_answer(temp_act_quiz_obj, answer_id_list)
+
+            if temp_act_quiz_obj.correct_answer_flag:
+                temp_act_quiz_obj.result = temp_act_quiz_obj.question.question_points
+
             temp_act_quiz_obj.question_done_flag = True
             temp_act_quiz_obj.finished_at = datetime.now()
             temp_act_quiz_obj.save()
@@ -166,6 +170,7 @@ def result_page_view(request, active_quiz_key):
 
     page_content = {}
     page_content['quiz_results'] = store_quiz_to_history(active_quiz_key, _user_inctance)
+    page_content['result_points'] = get_result_quiz_points(active_quiz_key)
 
     return render(request, 'testsystem/result_page.html', context=page_content)
 
