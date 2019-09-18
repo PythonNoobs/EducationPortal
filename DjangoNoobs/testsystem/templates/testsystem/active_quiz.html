@@ -21,6 +21,7 @@
             <input type="hidden" name="id_action" value='Null'>
                 {% csrf_token %}
                 <div class="card">
+                {% if active_question.question.question_type == 'Single Answer' %}
                     {% for answer in answers %}
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="answerOption" value="{{answer}}">
@@ -29,6 +30,18 @@
                         <label class="form-check-label" for="exampleRadios1">{{answer}}</label>
                     </div>
                     {% endfor %}
+                {% elif active_question.question.question_type == 'Multi Answer' %}
+                    {% for answer in answers %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="answerOption" value="{{answer}}">
+                        <input type="hidden" name="id_question" value="{{active_question.question.id}}">
+                        <label class="form-check-label" for="exampleRadios1">{{answer}}</label>
+                    </div>
+                    {% endfor %}
+                
+                {% else %}
+                
+                {% endif %}
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-primary mt-2" type="submit" 
