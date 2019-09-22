@@ -6,7 +6,7 @@
     {% if not detail and request.user.is_authenticated %}
         <form action="{% url 'like_post' %}" method="post">
             {% csrf_token %}
-            {% if is_liked %}
+            {% if request.user in post.likes.all %}
                 <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Remove Like</button>
             {% else %}
                 <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
@@ -15,7 +15,7 @@
 
         <form action="{% url 'dislike_post' %}" method="post">
             {% csrf_token %}
-            {% if is_disliked %}
+            {% if request.user in post.dislikes.all %}
                 <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Remove Dislike</button>
             {% else %}
                 <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Dislike</button>

@@ -132,18 +132,6 @@ class PostDetail(View):
         if user.is_authenticated:
             context['form'] = self.comment_form
 
-        is_liked = False
-        if post.likes.filter(id=request.user.id).exists():
-            is_liked = True
-        context['is_liked'] = is_liked
-        context['total_likes'] = post.total_likes()
-
-        is_disliked = False
-        if post.dislikes.filter(id=request.user.id).exists():
-            is_disliked = True
-        context['is_disliked'] = is_disliked
-        context['total_dislikes'] = post.total_dislikes()
-
         return render(request, self.template, context=context)
 
 
