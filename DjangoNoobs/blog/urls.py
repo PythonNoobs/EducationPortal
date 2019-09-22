@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 from .views import *
 
@@ -27,4 +28,11 @@ urlpatterns = [
     # For comments (TEST ROUT)
     path('post/<str:slug>/', PostDetail.as_view(), name='post_detail_url'),
     path('post/<str:slug>/comment/', add_comment, name='post_comment_url'),
+
+    # For likes
+    path('like/', like_post, name='like_post'),
+    path('dislike/', dislike_post, name='dislike_post'),
+    path('comment_like/', like_comment, name='like_comment'),
+    path('comment_dislike/', dislike_comment, name='dislike_comment'),
+
 ]

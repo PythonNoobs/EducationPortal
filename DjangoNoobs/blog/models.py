@@ -62,6 +62,9 @@ class Post(models.Model):
     title = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=200, blank=True, unique=True)
     text = models.TextField(blank=True)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='dislikes', blank=True)
+
     image = models.ImageField(blank=True, null=True)
 
     create_date = models.DateTimeField(auto_now_add=True)
@@ -78,6 +81,12 @@ class Post(models.Model):
 
     def get_comment_url(self):
         return reverse('post_comment_url', kwargs={'slug': self.slug})
+
+    def total_likes(self):
+        return self.likes.count()
+
+    def total_dislikes(self):
+        return self.dislikes.count()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -107,6 +116,9 @@ class Comment(models.Model):
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
 
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='comment_dislikes', blank=True)
+
     def __str__(self):
         return self.content[0:200]
 
@@ -121,6 +133,12 @@ class Comment(models.Model):
         if level > 5:
             level = 5
         return 12 - level
+
+    def total_likes(self):
+        return self.likes.count()
+
+    def total_dislikes(self):
+        return self.dislikes.count()
 
 
 class LikeDislike(models.Model):

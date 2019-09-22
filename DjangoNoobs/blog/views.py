@@ -126,13 +126,79 @@ class PostDetail(View):
         user = request.user
         context['post'] = post
         context['comments'] = post.comment_set.all().order_by('path')
-        context['next'] = post.get_absolute_url()
+        # context['next'] = post.get_absolute_url()
         context['admin_object'] = post
 
         if user.is_authenticated:
             context['form'] = self.comment_form
 
+        is_liked = False
+        if post.likes.filter(id=request.user.id).exists():
+            is_liked = True
+        context['is_liked'] = is_liked
+        context['total_likes'] = post.total_likes()
+
+        is_disliked = False
+        if post.dislikes.filter(id=request.user.id).exists():
+            is_disliked = True
+        context['is_disliked'] = is_disliked
+        context['total_dislikes'] = post.total_dislikes()
+
         return render(request, self.template, context=context)
+
+
+@login_required
+def like_post(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+        # При создании лайка проверяем есть ли дизлайк и удаляем его
+        if post.dislikes.filter(id=request.user.id).exists():
+            post.dislikes.remove(request.user)
+    return redirect(post.get_absolute_url())
+
+
+@login_required
+def dislike_post(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    if post.dislikes.filter(id=request.user.id).exists():
+        post.dislikes.remove(request.user)
+    else:
+        post.dislikes.add(request.user)
+        # При создании дизлайка проверяем есть ли лайк и удаляем его
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+    return redirect(post.get_absolute_url())
+
+
+@login_required
+def like_comment(request):
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    post = get_object_or_404(Post, id=comment.post_id_id)
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+        # При создании лайка проверяем есть ли дизлайк и удаляем его
+        if comment.dislikes.filter(id=request.user.id).exists():
+            comment.dislikes.remove(request.user)
+    return redirect(post.get_absolute_url())
+
+
+@login_required
+def dislike_comment(request):
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    post = get_object_or_404(Post, id=comment.post_id_id)
+    if comment.dislikes.filter(id=request.user.id).exists():
+        comment.dislikes.remove(request.user)
+    else:
+        comment.dislikes.add(request.user)
+        # При создании дизлайка проверяем есть ли лайк и удаляем его
+        if comment.likes.filter(id=request.user.id).exists():
+            comment.likes.remove(request.user)
+    return redirect(post.get_absolute_url())
 
 
 @login_required
@@ -156,3 +222,5 @@ def add_comment(request, slug):
         comment.save()
 
     return redirect(post.get_absolute_url())  # post.get_absolute_url()
+
+

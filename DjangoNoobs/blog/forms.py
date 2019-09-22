@@ -54,7 +54,7 @@ class PostForm(forms.ModelForm):
         new_title = self.cleaned_data['title'].lower()
         if new_title == 'create':
             raise ValidationError('Название поста не может быть "Create"')
-        if Post.objects.filter(name__iexact=new_title).count():
+        if Post.objects.filter(title__iexact=new_title).count():
             raise ValidationError('Пост "{}" уже существует'.format(new_title))
         return new_title
 

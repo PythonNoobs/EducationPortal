@@ -33,7 +33,7 @@ class ObjectListMixin:
             'is_paginated': is_paginated,
             'prev_url': prev_url,
             'next_url': next_url,
-            'detail': True
+            'detail': True,
         }
         return render(request, self.template, context=context)
 
