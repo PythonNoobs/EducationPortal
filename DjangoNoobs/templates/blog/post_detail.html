@@ -31,8 +31,7 @@
                                 <strong>{{ comment.author_id.username }}</strong> написал
                                 {{ comment.pub_date }}
                                 <a href="#comment-{{ comment.id }}">#</a>
-                                Лайков: {{ comment.total_likes }}
-                                Дизлайков: {{ comment.total_dislikes }}
+
                             </div>
                             <div class="card-body">
                                 <p class="card-text">{{ comment.content|safe }}</p>
@@ -42,27 +41,9 @@
                                         Ответить
                                     </button>
                                 {% endif %}
-
-                                {% if request.user.is_authenticated and request.user != comment.author_id %}
-                                    <form action="{% url 'like_comment' %}" method="post">
-                                        {% csrf_token %}
-                                        {% if request.user in comment.likes.all %}
-                                            <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-danger">Remove Like</button>
-                                        {% else %}
-                                            <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">Like</button>
-                                        {% endif %}
-                                    </form>
-
-                                    <form action="{% url 'dislike_comment' %}" method="post">
-                                        {% csrf_token %}
-                                        {% if request.user in comment.dislikes.all %}
-                                            <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-danger">Remove Dislike</button>
-                                        {% else %}
-                                            <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">Dislike</button>
-                                        {% endif %}
-                                    </form>
-                                {% endif %}
-
+                            </div>
+                            <div class="card-header" id="like-comment-section-{{ comment.id }}">
+                                {% include 'blog/includes/like_comment.html' %}
                             </div>
                         </div>
                     </div>

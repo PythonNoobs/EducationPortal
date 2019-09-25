@@ -30,9 +30,8 @@ urlpatterns = [
     path('post/<str:slug>/comment/', add_comment, name='post_comment_url'),
 
     # For likes
-    path('like/', like_post, name='like_post'),
-    path('dislike/', dislike_post, name='dislike_post'),
-    path('comment_like/', like_comment, name='like_comment'),
-    path('comment_dislike/', dislike_comment, name='dislike_comment'),
-
+    path('post_like/', LikePost.as_view(), name='like_post'),
+    path('post_dislike/', DislikePost.as_view(), name='dislike_post'),
+    path('comment_like/', LikeComment.as_view(), name='like_comment'),
+    path('comment_dislike/', DislikeComment.as_view(), name='dislike_comment'),
 ]

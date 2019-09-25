@@ -1,6 +1,8 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 
 
 # Mixin for render list page Post, Tag, Category
@@ -104,4 +106,39 @@ class ObjectDeleteMixin:
         obj.delete()
         return redirect(reverse(self.redirect_url))
 
+
+# Mixin for likes and dislikes for Comments and Posts (and other models if need it)
+class LikeDislikeMixin:
+    model = None
+    get_model = None
+    type = None
+    template = None
+
+    def post(self, request):
+        obj = get_object_or_404(self.model, id=request.POST.get(self.get_model))
+        if self.type == 'likes':
+            # if like is already exist - remove him (reply click like-button)
+            if obj.likes.filter(id=request.user.id).exists():
+                obj.likes.remove(request.user)
+            else:
+                # create like
+                obj.likes.add(request.user)
+                # with creating like, check dislike - if exists, remove him
+                if obj.dislikes.filter(id=request.user.id).exists():
+                    obj.dislikes.remove(request.user)
+        elif self.type == 'dislikes':
+            # if dislike is already exist - remove him (reply click dislike-button)
+            if obj.dislikes.filter(id=request.user.id).exists():
+                obj.dislikes.remove(request.user)
+            else:
+                # create dislike
+                obj.dislikes.add(request.user)
+                # with creating dislike, check like - if exists, remove him
+                if obj.likes.filter(id=request.user.id).exists():
+                    obj.likes.remove(request.user)
+
+        context = {self.model.__name__.lower(): obj}
+        if request.is_ajax():
+            html = render_to_string(self.template, context, request=request)
+            return JsonResponse({'form': html})
 

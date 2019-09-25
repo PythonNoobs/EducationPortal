@@ -1,27 +1,11 @@
 <div class="card-header">
     Опубликовано {{ post.create_date }} пользователем {{ post.author }}.<br>
     Последнее изменение: {{ post.change_date }}<br>
-    Лайков: {{ post.total_likes }}
-    Дизлайков: {{ post.total_dislikes }}
-    {% if not detail and request.user.is_authenticated %}
-        <form action="{% url 'like_post' %}" method="post">
-            {% csrf_token %}
-            {% if request.user in post.likes.all %}
-                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Remove Like</button>
-            {% else %}
-                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
-            {% endif %}
-        </form>
 
-        <form action="{% url 'dislike_post' %}" method="post">
-            {% csrf_token %}
-            {% if request.user in post.dislikes.all %}
-                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Remove Dislike</button>
-            {% else %}
-                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Dislike</button>
-            {% endif %}
-        </form>
-    {% endif %}
+    <div id="like-post-section-{{ post.id }}">
+        {% include 'blog/includes/like_post.html' %}
+    </div>
+
 </div>
 <div class="card-body">
     <h3 class="card-title">{{ post.title }}</h3>

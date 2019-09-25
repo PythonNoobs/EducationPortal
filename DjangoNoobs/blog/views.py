@@ -1,9 +1,11 @@
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.template.context_processors import csrf
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_http_methods
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,7 +21,7 @@ from .utils import ObjectDetailMixin
 from .utils import ObjectCreateMixin
 from .utils import ObjectUpdateMixin
 from .utils import ObjectDeleteMixin
-from .utils import ObjectListMixin
+from .utils import ObjectListMixin, LikeDislikeMixin
 
 
 class PostList(ObjectListMixin, View):
@@ -135,58 +137,32 @@ class PostDetail(View):
         return render(request, self.template, context=context)
 
 
-@login_required
-def like_post(request):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
-        # При создании лайка проверяем есть ли дизлайк и удаляем его
-        if post.dislikes.filter(id=request.user.id).exists():
-            post.dislikes.remove(request.user)
-    return redirect(post.get_absolute_url())
+class LikePost(LoginRequiredMixin, LikeDislikeMixin, View):
+    model = Post
+    get_model = 'post_id'
+    type = 'likes'
+    template = 'blog/includes/like_post.html'
 
 
-@login_required
-def dislike_post(request):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    if post.dislikes.filter(id=request.user.id).exists():
-        post.dislikes.remove(request.user)
-    else:
-        post.dislikes.add(request.user)
-        # При создании дизлайка проверяем есть ли лайк и удаляем его
-        if post.likes.filter(id=request.user.id).exists():
-            post.likes.remove(request.user)
-    return redirect(post.get_absolute_url())
+class DislikePost(LoginRequiredMixin, LikeDislikeMixin, View):
+    model = Post
+    get_model = 'post_id'
+    type = 'dislikes'
+    template = 'blog/includes/like_post.html'
 
 
-@login_required
-def like_comment(request):
-    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    post = get_object_or_404(Post, id=comment.post_id_id)
-    if comment.likes.filter(id=request.user.id).exists():
-        comment.likes.remove(request.user)
-    else:
-        comment.likes.add(request.user)
-        # При создании лайка проверяем есть ли дизлайк и удаляем его
-        if comment.dislikes.filter(id=request.user.id).exists():
-            comment.dislikes.remove(request.user)
-    return redirect(post.get_absolute_url())
+class LikeComment(LoginRequiredMixin, LikeDislikeMixin, View):
+    model = Comment
+    get_model = 'comment_id'
+    type = 'likes'
+    template = 'blog/includes/like_comment.html'
 
 
-@login_required
-def dislike_comment(request):
-    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    post = get_object_or_404(Post, id=comment.post_id_id)
-    if comment.dislikes.filter(id=request.user.id).exists():
-        comment.dislikes.remove(request.user)
-    else:
-        comment.dislikes.add(request.user)
-        # При создании дизлайка проверяем есть ли лайк и удаляем его
-        if comment.likes.filter(id=request.user.id).exists():
-            comment.likes.remove(request.user)
-    return redirect(post.get_absolute_url())
+class DislikeComment(LoginRequiredMixin, LikeDislikeMixin, View):
+    model = Comment
+    get_model = 'comment_id'
+    type = 'dislikes'
+    template = 'blog/includes/like_comment.html'
 
 
 @login_required
