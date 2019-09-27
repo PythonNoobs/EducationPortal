@@ -18,6 +18,7 @@
                     {% for item in quiz_results %}
                     <p class="h6">{{item}}</p>
                     {% endfor %}
+                <div class="h4">Total points: {{ result_points }}</div>
                 </div>
             </div>
             <a class="btn btn-primary mt-2" href="{% url 'test' %}" >Go Back to test page</a>
