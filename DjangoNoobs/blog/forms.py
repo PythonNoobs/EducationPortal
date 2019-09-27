@@ -25,8 +25,8 @@ class TagForm(forms.ModelForm):
         new_name = self.cleaned_data['name'].lower()
         if new_name == 'create':
             raise ValidationError('Имя тега не может быть "Create"')
-        if Tag.objects.filter(name__iexact=new_name).count():
-            raise ValidationError('Тег "{}" уже существует'.format(new_name))
+        # if Tag.objects.filter(name__iexact=new_name).count():
+        #     raise ValidationError('Тег "{}" уже существует'.format(new_name))
         return new_name
 
 
@@ -48,8 +48,8 @@ class CategoryForm(forms.ModelForm):
         new_name = self.cleaned_data['name'].lower()
         if new_name == 'create':
             raise ValidationError('Название категории не может быть "Create"')
-        if Category.objects.filter(name__iexact=new_name).count():
-            raise ValidationError('Категория "{}" уже существует'.format(new_name))
+        # if Category.objects.filter(name__iexact=new_name).count():
+        #     raise ValidationError('Категория "{}" уже существует'.format(new_name))
         return new_name
 
 
@@ -74,8 +74,8 @@ class PostForm(forms.ModelForm):
         new_title = self.cleaned_data['title'].lower()
         if new_title == 'create':
             raise ValidationError('Название поста не может быть "Create"')
-        if Post.objects.filter(title__iexact=new_title).count():
-            raise ValidationError('Пост "{}" уже существует'.format(new_title))
+        # if Post.objects.filter(title__iexact=new_title).count():
+        #     raise ValidationError('Пост "{}" уже существует'.format(new_title))
         return new_title
 
 
