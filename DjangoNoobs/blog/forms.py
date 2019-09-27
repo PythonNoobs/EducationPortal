@@ -1,9 +1,15 @@
+"""
+Forms classes for Blog application
+"""
+
+
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Tag, Category, Post
 
 
 class TagForm(forms.ModelForm):
+    """Class for Tag Form"""
     class Meta:
         model = Tag
         fields = ['name']
@@ -12,6 +18,10 @@ class TagForm(forms.ModelForm):
         }
 
     def clean_name(self):
+        """
+        Method for disable create tag with name 'create'
+        and check for already exist names
+        """
         new_name = self.cleaned_data['name'].lower()
         if new_name == 'create':
             raise ValidationError('Имя тега не может быть "Create"')
@@ -21,6 +31,7 @@ class TagForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
+    """ Class for Category Form """
     class Meta:
         model = Category
         fields = ['name', 'description']
@@ -30,6 +41,10 @@ class CategoryForm(forms.ModelForm):
         }
 
     def clean_name(self):
+        """
+        Method for disable create category with name 'create'
+        and check for already exist names
+        """
         new_name = self.cleaned_data['name'].lower()
         if new_name == 'create':
             raise ValidationError('Название категории не может быть "Create"')
@@ -39,6 +54,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    """ Class for Post Form """
     class Meta:
         model = Post
         fields = ['title', 'category', 'tags', 'text', 'image']
@@ -51,6 +67,10 @@ class PostForm(forms.ModelForm):
         }
 
     def clean_title(self):
+        """
+        Method for disable create post with name 'create'
+        and check for already exist names
+        """
         new_title = self.cleaned_data['title'].lower()
         if new_title == 'create':
             raise ValidationError('Название поста не может быть "Create"')
@@ -60,7 +80,7 @@ class PostForm(forms.ModelForm):
 
 
 class CommentForm(forms.Form):
-
+    """ Class for Comment Form """
     parent_comment = forms.IntegerField(
         widget=forms.HiddenInput,
         required=False

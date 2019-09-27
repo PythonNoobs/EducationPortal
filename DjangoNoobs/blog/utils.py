@@ -1,17 +1,22 @@
+"""
+Mixins (using in views) for Blog application
+"""
+
+
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
 
-# Mixin for render list page Post, Tag, Category
 class ObjectListMixin:
+    """ Mixin for render list page Post, Tag, Category """
     model = None
     template = None
     paginate_items = None
 
     def get(self, request):
+        """ GET method for ObjectListMixin """
         obj = self.model.objects.all()
         paginator = Paginator(obj, self.paginate_items)
 
@@ -40,12 +45,13 @@ class ObjectListMixin:
         return render(request, self.template, context=context)
 
 
-# Mixin for render detail page for Post, Tag, Category
 class ObjectDetailMixin:
+    """ Mixin for render detail page for Post, Tag, Category """
     model = None
     template = None
 
     def get(self, request, slug):
+        """ GET method for ObjectDetailMixin """
         obj = get_object_or_404(self.model, slug__iexact=slug)
         return render(request, self.template, context={self.model.__name__.lower(): obj,
                                                        'admin_object': obj,
@@ -53,16 +59,18 @@ class ObjectDetailMixin:
                                                        })
 
 
-# Mixin for render create page for Post, Tag, Category
 class ObjectCreateMixin:
+    """ Mixin for render create page for Post, Tag, Category """
     form_model = None
     template = None
 
     def get(self, request):
+        """ GET method for ObjectCreateMixin """
         form = self.form_model()
         return render(request, self.template, context={'form': form})
 
     def post(self, request):
+        """ POST method for ObjectCreateMixin """
         bound_form = self.form_model(request.POST)
         if bound_form.is_valid():
             bound_form.instance.author = request.user
@@ -71,50 +79,57 @@ class ObjectCreateMixin:
         return render(request, self.template, context={'form': bound_form})
 
 
-# Mixin for render edit page for Post, Tag, Category
 class ObjectUpdateMixin:
+    """ Mixin for render edit page for Post, Tag, Category """
     model = None
     form_model = None
     template = None
 
     def get(self, request, slug):
+        """ GET method for ObjectUpdateMixin """
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.form_model(instance=obj)
-        return render(request, self.template, context={'form': bound_form, self.model.__name__.lower(): obj})
+        context = {'form': bound_form, self.model.__name__.lower(): obj}
+        return render(request, self.template, context=context)
 
     def post(self, request, slug):
+        """ POST method for ObjectUpdateMixin """
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.form_model(request.POST, instance=obj)
         if bound_form.is_valid():
             updated_obj = bound_form.save()
             return redirect(updated_obj)
-        return render(request, self.template, context={'form': bound_form, self.model.__name__.lower(): obj})
+        context = {'form': bound_form, self.model.__name__.lower(): obj}
+        return render(request, self.template, context=context)
 
 
-# Mixin for render delete page for Post, Tag, Category
 class ObjectDeleteMixin:
+    """ Mixin for render delete page for Post, Tag, Category """
     model = None
     template = None
     redirect_url = None
 
     def get(self, request, slug):
+        """ GET method for ObjectDeleteMixin """
         obj = self.model.objects.get(slug__iexact=slug)
         return render(request, self.template, context={self.model.__name__.lower(): obj})
 
-    def post(self, request, slug):
+    def post(self, slug):
+        """ POST method for ObjectDeleteMixin """
         obj = self.model.objects.get(slug__iexact=slug)
         obj.delete()
         return redirect(reverse(self.redirect_url))
 
 
-# Mixin for likes and dislikes for Comments and Posts (and other models if need it)
 class LikeDislikeMixin:
+    """ Mixin for likes and dislikes for Comments and Posts (and other models if need it) """
     model = None
     get_model = None
     type = None
     template = None
 
     def post(self, request):
+        """ POST method for LikeDislikeMixin """
         obj = get_object_or_404(self.model, id=request.POST.get(self.get_model))
         if self.type == 'likes':
             # if like is already exist - remove him (reply click like-button)
@@ -141,4 +156,6 @@ class LikeDislikeMixin:
         if request.is_ajax():
             html = render_to_string(self.template, context, request=request)
             return JsonResponse({'form': html})
-
+        # pylint error R1710: Either all return statements in a function should return
+        # an expression, or none of them should. (inconsistent-return-statements)
+        return None

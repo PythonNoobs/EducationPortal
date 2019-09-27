@@ -1,6 +1,13 @@
-from django.conf.urls import url
+"""
+Urls patterns for blog application
+"""
+
+
 from django.urls import path
-from .views import *
+from .views import PostList, PostCreate, PostUpdate, PostDelete, TagList, TagCreate
+from .views import TagDetails, TagUpdate, TagDelete, CategoryList, CategoryCreate
+from .views import CategoryDetails, CategoryUpdate, CategoryDelete, PostDetail
+from .views import add_comment, LikePost, DislikePost, LikeComment, DislikeComment
 
 
 urlpatterns = [
