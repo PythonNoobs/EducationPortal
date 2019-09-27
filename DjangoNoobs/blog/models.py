@@ -122,8 +122,8 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['-create_date']
-        get_latest_by = 'create_date'
+        ordering = ['-change_date']
+        get_latest_by = 'change_date'
 
 
 class Mark(models.Model):
