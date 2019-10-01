@@ -1,0 +1,28 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+    <title>{{ tag.name }} - {{ block.super }}</title>
+{% endblock %}
+
+{% block content %}
+
+    {% if detail and request.user.is_staff %}
+        <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+            Удалить
+        </button>
+        {% include 'blog/includes/tag_delete_dialog.html' %}
+    {% endif %}
+
+    <h1 class="mt-5">
+        Posts with "{{ tag.name|title }}" tag
+    </h1>
+
+    {% for post in tag.posts.all %}
+        <div class="card mb-2">
+            {% include 'blog/includes/post_card_template.html' %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+    <title>Tags list - {{ block.super }}</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="mb-5">Теги:</h2>
+
+    {% for tag in page_object.object_list %}
+        <a href="{{ tag.get_absolute_url }}" class="btn btn-secondary btn-sm">{{tag.name }}</a>
+    {% endfor %}
+
+{% endblock %}

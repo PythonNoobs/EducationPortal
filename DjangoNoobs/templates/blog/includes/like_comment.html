@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-sm">
+        Лайков: {{ comment.total_likes }}
+    </div>
+    <div class="col-sm">
+        Дизлайков: {{ comment.total_dislikes }}
+    </div>
+</div>
+
+{% if request.user.is_authenticated and request.user != comment.author_id %}
+    <div class="row">
+        <div class="col-sm">
+            <form action="{% url 'like_comment' %}" method="post">
+                {% csrf_token %}
+                {% if request.user in comment.likes.all %}
+                    <button type="submit" id="like_comment_btn" value="{{ comment.id }}" class="btn btn-danger">Remove Like</button>
+                {% else %}
+                    <button type="submit" id="like_comment_btn" value="{{ comment.id }}" class="btn btn-primary">Like</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-sm">
+            <form action="{% url 'dislike_comment' %}" method="post">
+                {% csrf_token %}
+                {% if request.user in comment.dislikes.all %}
+                    <button type="submit" id="dislike_comment_btn" value="{{ comment.id }}" class="btn btn-danger">Remove Dislike</button>
+                {% else %}
+                    <button type="submit" id="dislike_comment_btn" value="{{ comment.id }}" class="btn btn-primary">Dislike</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endif %}

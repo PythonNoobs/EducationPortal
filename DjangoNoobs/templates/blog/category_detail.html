@@ -1,0 +1,35 @@
+{% extends 'blog/base_blog.html' %}
+
+{% block title %}
+    <title>{{ category.name }} - {{ block.super }}</title>
+{% endblock %}
+
+{% block content %}
+
+    {% if detail and request.user.is_staff %}
+        <a class="btn btn-warning" href="{{ admin_object.get_update_url }}">Редактировать</a>
+
+        {% if category.posts.count %}
+            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"
+                    title="Невозможно удалить категорию, так как к ней привязаны посты ({{ category.posts.count }})">
+                Удалить
+            </button>
+        {% else %}
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                Удалить
+            </button>
+        {% endif %}
+        {% include 'blog/includes/category_delete_dialog.html' %}
+    {% endif %}
+
+    <h1 class="mt-5">
+        Posts with category "{{ category.name|title }}"
+    </h1>
+
+    {% for post in category.posts.all %}
+        <div class="card mb-2">
+            {% include 'blog/includes/post_card_template.html' %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

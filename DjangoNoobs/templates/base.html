@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="ru">
     <head>
@@ -29,11 +30,30 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'profile'%}">Profile <span class="sr-only">(current)</span></a>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Blog</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'posts_list_url'%}">Posts</a>
+                            <a class="dropdown-item" href="{% url 'category_list_url'%}">Categories</a>
+                            <a class="dropdown-item" href="{% url 'tags_list_url'%}">Tags</a>
+
+                            {% if request.user.is_authenticated %}
+                                {% block admin-panel %}{%endblock%}
+                            {% endif %}
+
+                        </div>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'test'%}">Test <span class="sr-only">(current)</span></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/">Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1"
+                        <a class="nav-link disabled" href="admin/" tabindex="-1"
                             aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
@@ -46,19 +66,25 @@
             </div>
         </nav>
 
-        {% block content %}
+        <div class="container mt-3">
+            <div class="row md-2">
+                <div class="col-8 offset-md-1">
 
-        {% endblock %}
+                    {% block content %}{% endblock %}
+
+                    {% block pagination %}{% endblock %}
+
+                </div>
+            </div>
+        </div>
+
         <hr>
         <footer class="container-fluid">
-            <small class="text-muted">&copy; PythonNoobs {% now "Y" %}</div>
+            <small class="text-muted">&copy; PythonNoobs {% now "Y" %}</small>
         </footer>
 
         <!-- SCRIPTS -->
-        {% block footscript %}{% endblock %}
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -67,6 +93,8 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+
+        {% block footscript %}{% endblock %}
 
     </body>
 </html>

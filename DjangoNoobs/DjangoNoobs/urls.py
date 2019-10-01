@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.Index.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('accounts/', include('authorization.urls'), name='accounts'),
-    path('testsystem/', include('testsystem.urls'), name='testsystem')
+    path('testsystem/', include('testsystem.urls'), name='testsystem'),
+    path('blog/', include('blog.urls'), name='blog'),
 ]

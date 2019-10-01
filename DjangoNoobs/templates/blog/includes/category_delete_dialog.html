@@ -1,0 +1,10 @@
+{% extends 'blog/includes/delete_dialog.html' %}
+
+{% block delete-dialog %}
+    <div class="modal-body">
+          <form class="" action="{{ category.get_delete_url }}" method="post" id="deleteForm">
+            {% csrf_token %}
+            <p>Вы уверены, что хотите удалить категорию <b>"{{ category.name|title }}"</b>?</p>
+        </form>
+    </div>
+{% endblock %}
