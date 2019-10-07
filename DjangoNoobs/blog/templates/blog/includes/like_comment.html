@@ -7,7 +7,7 @@
     </div>
 </div>
 
-{% if request.user.is_authenticated and request.user != comment.author_id %}
+{% if request.user.is_authenticated %}
     <div class="row">
         <div class="col-sm">
             <form action="{% url 'like_comment' %}" method="post">

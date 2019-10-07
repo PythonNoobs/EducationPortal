@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'authorization',
     'testsystem',
     'blog',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +46,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'DjangoNoobs.urls'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 TEMPLATES = [
     {
@@ -63,6 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DjangoNoobs.wsgi.application'
+ASGI_APPLICATION = 'DjangoNoobs.routing.application'
 
 
 # Database

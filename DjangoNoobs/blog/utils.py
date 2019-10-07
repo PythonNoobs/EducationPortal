@@ -129,7 +129,11 @@ class LikeDislikeMixin:
     template = None
 
     def post(self, request):
-        """ POST method for LikeDislikeMixin """
+        """
+        POST method for LikeDislikeMixin
+        :param request: get model, user, user.id and ajax from request
+        :return: JsonResponse or None (if request is not Ajax)
+        """
         obj = get_object_or_404(self.model, id=request.POST.get(self.get_model))
         if self.type == 'likes':
             # if like is already exist - remove him (reply click like-button)

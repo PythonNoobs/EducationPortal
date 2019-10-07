@@ -8,6 +8,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from uuslug import slugify
+from datetime import datetime
 
 
 class Tag(models.Model):
@@ -154,7 +155,12 @@ class Comment(models.Model):
     dislikes = models.ManyToManyField(User, related_name='comment_dislikes', blank=True)
 
     def __str__(self):
-        return self.content[0:200]
+        related_name = "Comment by {author} to ".format(author=self.author_id)
+        if len(self.path) > 1:
+            related_name += "comment with id {comment}".format(comment=self.path[-1])
+        else:
+            related_name += "post {post}".format(post=self.post_id)
+        return related_name
 
     def get_offset(self):
         """ Method for set the level of comment """

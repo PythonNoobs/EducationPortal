@@ -6,10 +6,11 @@ Views functions for Blog application
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.template.context_processors import csrf
-from django.views.decorators.http import require_http_methods
+from django.template.loader import render_to_string
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Tag, Category, Post, Comment
@@ -171,7 +172,14 @@ class PostDetail(View):
     comment_form = CommentForm
 
     def get(self, request, slug, *args, **kwargs):
-        """ GET method for post page """
+        """
+        GET method for post page
+        :param request: get user from request
+        :param slug: slug of post
+        :param args: args
+        :param kwargs: kwargs
+        :return: render template
+        """
         post = get_object_or_404(Post, slug__iexact=slug)
         context = {}
         context.update(csrf(request))
@@ -230,29 +238,34 @@ class DislikeComment(LoginRequiredMixin, LikeDislikeMixin, View):
     template = 'blog/includes/like_comment.html'
 
 
-@login_required
-@require_http_methods(["POST"])
-def add_comment(request, slug):
+class AddComment(LoginRequiredMixin, View):
     """
-    view function for add comment to post
-    :param slug: slug of post
-    :return: redirect to post.get_absolute_url() - it's temporary
+    This class-view used for add comments
+    Using LoginRequiredMixin (from django-auth)
     """
-    form = CommentForm(request.POST)
-    post = get_object_or_404(Post, slug__iexact=slug)
+    def post(self, request, slug):
+        """
+        GET method for add comment page
+        :param request: get form from request
+        :param slug: slug of post
+        :return: redirect to post page
+        """
+        form = CommentForm(request.POST)
+        post = get_object_or_404(Post, slug__iexact=slug)
 
-    if form.is_valid():
-        comment = Comment()
-        comment.path = []
-        comment.post_id = post
-        comment.author_id = auth.get_user(request)
-        comment.content = form.cleaned_data['comment_area']
-        comment.save()
-        try:
-            comment.path.extend(Comment.objects.get(id=form.cleaned_data['parent_comment']).path)
-            comment.path.append(comment.id)
-        except ObjectDoesNotExist:
-            comment.path.append(comment.id)
-        comment.save()
+        if form.is_valid():
+            comment = Comment()
+            comment.path = []
+            comment.post_id = post
+            comment.author_id = auth.get_user(request)
+            comment.content = form.cleaned_data['comment_area']
+            comment.save()
+            try:
+                comment.path.extend(Comment.objects.get(id=form.cleaned_data['parent_comment']).path)
+                comment.path.append(comment.id)
+            except ObjectDoesNotExist:
+                comment.path.append(comment.id)
+            comment.save()
 
-    return redirect(post.get_absolute_url())
+        return redirect(post.get_absolute_url())
+
