@@ -102,10 +102,6 @@ class Post(models.Model):
         """ Method for get delete page url to current post """
         return reverse('post_delete_url', kwargs={'slug': self.slug})
 
-    def get_comment_url(self):
-        """ Method for get comment url for current post """
-        return reverse('post_comment_url', kwargs={'slug': self.slug})
-
     def total_likes(self):
         """ Method for count total likes for current post """
         return self.likes.count()

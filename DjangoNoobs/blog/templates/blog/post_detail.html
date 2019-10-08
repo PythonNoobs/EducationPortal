@@ -68,7 +68,7 @@
             <div class="row justify-content-start" id="comment_form_container">
                 <div class="col mb-2" id="col_offset_comment_form_container">
                     <h5 class="card-title" id="comment_header_text">Написать комментарий</h5>
-                    <form id="comment_form" action="{{ post.get_comment_url }}" method="post">
+                    <form id="comment_form" action="" method="post">
                         <input type="hidden" id="hidden_comment_form"
                                value="{{ request.user }}" data-post="{{ post.slug }}">
                         {% csrf_token %}

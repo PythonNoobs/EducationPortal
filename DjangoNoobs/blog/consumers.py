@@ -10,8 +10,11 @@ from .models import Post, Comment
 
 
 class CommentConsumer(AsyncConsumer):
-
+    """
+    Consumer Class for comments based on AsyncConsumer
+    """
     async def websocket_connect(self, event):
+        """ Method for connect websocket """
         await self.send({
             'type': 'websocket.accept'
         })
@@ -24,6 +27,7 @@ class CommentConsumer(AsyncConsumer):
         )
 
     async def websocket_receive(self, event):
+        """ Method for receive data from websocket """
         new_comment_data = event.get('text')
         new_comment = json.loads(new_comment_data)
         # Get all fields from front
@@ -53,8 +57,15 @@ class CommentConsumer(AsyncConsumer):
             }
         )
 
+    async def websocket_disconnect(self, event):
+        """ Method for disconnect websocket """
+        await self.send({
+            'type': 'websocket.disconnect'
+        })
+
     @database_sync_to_async
     def create_comment(self, post_slug, author, comment_text, parrent_comment):
+        """ Method for create new comment """
         comment = Comment()
         comment.path = []
         comment.post_id = get_object_or_404(Post, slug__iexact=post_slug)
@@ -73,9 +84,11 @@ class CommentConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def get_post_id(self, post_slug):
+        """ Method for return post id """
         return str(get_object_or_404(Post, slug__iexact=post_slug).id)
 
     async def show_comment(self, event):
+        """ Method for send comment to front """
         await self.send({
             'type': 'websocket.send',
             'text': event['text']

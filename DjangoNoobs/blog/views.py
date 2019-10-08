@@ -237,35 +237,3 @@ class DislikeComment(LoginRequiredMixin, LikeDislikeMixin, View):
     type = 'dislikes'
     template = 'blog/includes/like_comment.html'
 
-
-class AddComment(LoginRequiredMixin, View):
-    """
-    This class-view used for add comments
-    Using LoginRequiredMixin (from django-auth)
-    """
-    def post(self, request, slug):
-        """
-        GET method for add comment page
-        :param request: get form from request
-        :param slug: slug of post
-        :return: redirect to post page
-        """
-        form = CommentForm(request.POST)
-        post = get_object_or_404(Post, slug__iexact=slug)
-
-        if form.is_valid():
-            comment = Comment()
-            comment.path = []
-            comment.post_id = post
-            comment.author_id = auth.get_user(request)
-            comment.content = form.cleaned_data['comment_area']
-            comment.save()
-            try:
-                comment.path.extend(Comment.objects.get(id=form.cleaned_data['parent_comment']).path)
-                comment.path.append(comment.id)
-            except ObjectDoesNotExist:
-                comment.path.append(comment.id)
-            comment.save()
-
-        return redirect(post.get_absolute_url())
-

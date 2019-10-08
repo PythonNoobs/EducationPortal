@@ -7,7 +7,7 @@ from django.urls import path
 from .views import PostList, PostCreate, PostUpdate, PostDelete, TagList, TagCreate
 from .views import TagDetails, TagUpdate, TagDelete, CategoryList, CategoryCreate
 from .views import CategoryDetails, CategoryUpdate, CategoryDelete, PostDetail
-from .views import LikePost, DislikePost, LikeComment, DislikeComment, AddComment
+from .views import LikePost, DislikePost, LikeComment, DislikeComment
 
 
 urlpatterns = [
@@ -31,9 +31,6 @@ urlpatterns = [
     path('category/<str:slug>/', CategoryDetails.as_view(), name='category_detail_url'),
     path('category/<str:slug>/update/', CategoryUpdate.as_view(), name='category_update_url'),
     path('category/<str:slug>/delete/', CategoryDelete.as_view(), name='category_delete_url'),
-
-    # urls for comments
-    path('post/<str:slug>/comment/', AddComment.as_view(), name='post_comment_url'),
 
     # urls for likes
     path('post_like/', LikePost.as_view(), name='like_post'),
