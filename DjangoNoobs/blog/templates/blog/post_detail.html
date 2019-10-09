@@ -134,7 +134,7 @@
 
             // Create all included div's with all variables for new_comment
             var new_comment_html =
-                `<div class="col-md-` + comment_get_col + ` offset-md-` + comment_get_offset + `">
+                `<div class="col-md-` + comment_get_col + ` offset-md-` + comment_get_offset + `" id="col_offset_comment_` + new_comment_id + `">
                     <div class="card bg-light mb-1">
                         <div class="card-header">
                             <strong>` + comment_author + `</strong> написал ` + comment_date + ` <a href="#comment-` + new_comment_id + `">#</a>
