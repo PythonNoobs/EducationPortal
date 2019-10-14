@@ -175,6 +175,14 @@ def result_page_view(request, active_quiz_key):
     return render(request, 'testsystem/result_page.html', context=page_content)
 
 
+class AddQuestionView(View):
+
+    template_name = 'testsystem/add_question.html'
+    page_content = {}
+
+    def get(self, request):
+        return render(request, self.template_name, self.page_content)
+
 ### Exceptions Block
 
 class NoMoreQuestions(Exception):

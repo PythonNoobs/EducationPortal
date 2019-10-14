@@ -9,13 +9,21 @@
     </head>
     <body>
         <h1> Welcome to the test system page </h1>
-
-        {% for quiz in quiz_list %}
-        
-        <p><a href="{% url 'quiz_details' quiz.id %}"> {{quiz.name}} </a></p>
-        
-        {% endfor %}
-
+        <div class="container">
+            <div class="card-deck mb-3">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Quiz list</h4>
+                    </div>
+                    <div class="card-body">
+                        {% for quiz in quiz_list %}
+                        <p><a href="{% url 'quiz_details' quiz.id %}">{{quiz.name}}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-lg btn-block btn-primary" href="{% url 'add_question' %}">Add new question</a>
+        </div>
     </body>
     {% endblock %}
 </html>
